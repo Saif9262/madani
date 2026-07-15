@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মাদ্রাসা কল ম্যানেজমেন্ট সিস্টেম</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Sticky Search Active Shadow */
+        .sticky-search-active {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        /* Hide scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Selection Mode Styles */
+        .checkbox-col {
+            display: none;
+        }
+        .selection-active .checkbox-col {
+            display: table-cell;
+        }
+        .selection-active tbody tr {
+            cursor: pointer;
+        }
+        .user-select-none {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-section, #print-section * {
+                visibility: visible;
+            }
+            #print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background-color: white;
+                color: black;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-12 text-gray-800">
+
+    <!-- সুন্দর ফ্লোটিং টোস্ট নোটিফিকেশন সিস্টেম -->
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-gray-100 shadow-xl rounded-xl px-5 py-3 flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none max-w-sm w-11/12">
+        <span id="toast-icon"></span>
+        <span id="toast-text" class="text-sm font-bold text-gray-700"></span>
+    </div>
+
+    <!-- প্রিন্টের জন্য সুবিন্যস্ত হিডেন সেকশন -->
+    <div id="print-section" class="hidden p-8">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">জামেয়া ইমদাদিয়া (বালিকা শাখা) মাদানীনগর</h1>
+            <p class="text-sm text-gray-600">মনিরামপুর, যশোর</p>
+            <div class="border-b-2 border-gray-800 my-3"></div>
+            <h2 id="print-class-name" class="text-lg font-bold text-gray-800">ক্লাস: -</h2>
+            <p class="text-xs text-gray-500">প্রিন্টের তারিখ ও সময়: <span id="print-datetime"></span></p>
+        </div>
+        <table class="w-full text-left border-collapse border border-gray-300 text-sm">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-3 py-2 text-center w-12">ক্রমিক</th>
+                    <th class="border border-gray-300 px-3 py-2 text-center w-20">আইডি</th>
+                    <th class="border border-gray-300 px-3 py-2 text-center w-16">রোল</th>
+                    <th class="border border-gray-300 px-4 py-2">শিক্ষার্থীর নাম</th>
+                    <th class="border border-gray-300 px-4 py-2">পিতার নাম</th>
+                    <th class="border border-gray-300 px-3 py-2 text-right w-24">বকেয়া</th>
+                    <th class="border border-gray-300 px-4 py-2 text-center w-40">কলের অবস্থা</th>
+                </tr>
+            </thead>
+            <tbody id="print-table-body">
+                <!-- ডায়নামিক্যালি প্রিন্ট আইটেম লোড হবে -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- অথেনটিকেশন / রেজিস্ট্রেশন স্ক্রিন (লগইন ওয়াল) -->
+    <div id="auth-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-emerald-800 via-teal-900 to-cyan-950 flex items-center justify-center p-4">
+        <div class="bg-white/95 backdrop-blur-md w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-emerald-500/20">
+            <!-- লোগো ও হেডার -->
+            <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white p-6 text-center">
+                <i class="fa-solid fa-mosque text-4xl mb-2 text-emerald-100 animate-pulse"></i>
+                <h2 class="text-xl md:text-2xl font-bold">জামেয়া ইমদাদিয়া (বালিকা শাখা) মাদানীনগর</h2>
+                <p class="text-xs text-emerald-100 mt-1">সিস্টেম ব্যবহারের জন্য প্রবেশ করুন</p>
+            </div>
+
+            <!-- ট্যাব সুইচার -->
+            <div class="flex border-b border-gray-200 bg-gray-50 text-xs md:text-sm font-bold">
+                <button onclick="switchAuthTab('guest')" id="tab-auth-guest" class="w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 cursor-pointer">নাম ও মোবাইল</button>
+                <button onclick="switchAuthTab('login')" id="tab-auth-login" class="w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer">ইমেল লগইন</button>
+                <button onclick="switchAuthTab('signup')" id="tab-auth-signup" class="w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer">নতুন অ্যাকাউন্ট</button>
+            </div>
+
+            <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto no-scrollbar">
+                <!-- ১. নাম ও মোবাইল দিয়ে প্রবেশ (Guest) -->
+                <div id="auth-guest-form" class="space-y-4">
+                    <p class="text-xs text-gray-500 leading-relaxed text-center">সহজে এবং দ্রুত প্রবেশের জন্য আপনার নাম এবং সচল মোবাইল নম্বর দিন। </p>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">আপনার সম্পূর্ণ নাম *</label>
+                        <input type="text" id="guest-name" placeholder="যেমন: মাও: ........" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল নাম্বার *</label>
+                        <input type="text" id="guest-phone" placeholder="যেমন: 017XXXXXXXX" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <button onclick="handleGuestLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> সরাসরি প্রবেশ করুন
+                    </button>
+
+                    <!-- অফলাইন মোডে সরাসরি যাওয়ার বাটন -->
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-gray-300"></div>
+                        <span class="flex-shrink mx-4 text-gray-400 text-[10px] font-bold uppercase">অথবা</span>
+                        <div class="flex-grow border-t border-gray-300"></div>
+                    </div>
+
+                    <button onclick="enterOfflineMode()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-lg text-xs transition border border-slate-300 active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-wifi-slash"></i> ডাটাবেজ ছাড়া (অফলাইন)
+                    </button>
+                </div>
+
+                <!-- ২. ইমেইল দিয়ে লগইন (Login) -->
+                <div id="auth-login-form" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেইল </label>
+                        <input type="email" id="login-email" placeholder="example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">পাসওয়ার্ড *</label>
+                        <input type="password" id="login-password" placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <button onclick="handleEmailLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-unlock"></i> লগইন করুন
+                    </button>
+                </div>
+
+                <!-- ৩. নতুন অ্যাকাউন্ট তৈরি (Signup) -->
+                <div id="auth-signup-form" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">আপনার পূর্ণ নাম </label>
+                        <input type="text" id="signup-name" placeholder="যেমন: মাও: ......" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল নাম্বার </label>
+                        <input type="text" id="signup-phone" placeholder="যেমন: 017XXXXXXXX" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেইল </label>
+                        <input type="email" id="signup-email" placeholder="example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">পাসওয়ার্ড (নূন্যতম ৬ অক্ষর) *</label>
+                        <input type="password" id="signup-password" placeholder="••••••••" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <button onclick="handleEmailSignup()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-md active:scale-95 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-user-plus"></i> অ্যাকাউন্ট তৈরি করুন
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 px-6 py-4 text-center border-t border-gray-100">
+                <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">জামেয়া ইমদাদিয়া (বালিকা শাখা) মাদানীনগর আইটি টিম © ২০২৬</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- মূল অ্যাপ্লিকেশন হেডার -->
+    <header id="main-header" class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-4 px-4 text-center shadow-md z-10 relative">
+        <div class="max-w-4xl mx-auto flex flex-col items-center gap-2">
+            <!-- হেডারের মূল কন্টেন্ট (গোপন এডমিন প্যানেল ট্রিগার সহ) -->
+            <div class="flex flex-col items-center">
+                <i id="mosque-icon" class="fa-solid fa-mosque text-3xl mb-1 text-emerald-100 cursor-pointer hover:scale-105 active:scale-90 transition duration-150"></i>
+                <h1 id="madrasa-title" onclick="handleHeaderTap()" class="text-xl md:text-2xl font-bold cursor-pointer transition select-none hover:text-emerald-100" title="৪ বার ট্যাপ করলে এডমিন প্যানেল ওপেন হবে">জামেয়া ইমদাদিয়া (বালিকা শাখা) মাদানীনগর</h1>
+                <p class="text-[10px] md:text-sm text-emerald-100">মনিরামপুর, যশোর</p>
+            </div>
+
+            <!-- ফোনকারী শিক্ষকের নাম ডিসপ্লে ও স্যুইচ অপশন -->
+            <div class="mt-2 w-full max-w-xs bg-emerald-800/40 p-2 rounded-lg border border-emerald-500/20 text-center flex items-center justify-between gap-2">
+                <div class="text-left">
+                    <span class="block text-[8px] text-emerald-200 uppercase font-bold tracking-wider">বর্তমান ব্যবহারকারী:</span>
+                    <span id="current-caller-name" class="text-xs font-bold text-white">-</span>
+                    <!-- হিডেন ইনপুট যা কোডের অন্যান্য অংশের সাথে সুসংগত রাখবে -->
+                    <input type="hidden" id="caller-identity" value="">
+                </div>
+                <button onclick="handleUserLogout()" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold rounded transition active:scale-95 flex items-center gap-1">
+                    <i class="fa-solid fa-power-off"></i> লগআউট
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- কাউন্টার সেকশন -->
+    <section id="counters-section" class="bg-white border-b border-gray-100 py-4 px-4 shadow-sm z-10 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center text-xs md:text-sm font-semibold">
+                <button onclick="filterByStatus('সব')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition active:scale-95 shadow-sm border border-gray-200">
+                    <span class="text-gray-600 mb-0.5"><i class="fa-solid fa-users text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">মোট ছাত্র</span>
+                    <span id="count-total" class="font-bold text-gray-700 text-sm mt-0.5">0</span>
+                </button>
+                <button onclick="filterByStatus('কল করা হয়েছে')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 transition active:scale-95 shadow-sm border border-blue-200">
+                    <span class="mb-0.5 text-blue-500"><i class="fa-solid fa-phone text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">কল হয়েছে</span>
+                    <span id="count-called" class="font-bold text-sm mt-0.5">0</span>
+                </button>
+                <button onclick="filterByStatus('কল ধরেছে')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition active:scale-95 shadow-sm border border-emerald-200">
+                    <span class="mb-0.5 text-emerald-500"><i class="fa-solid fa-phone-slash fa-flip-horizontal text-emerald-600 text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">কল ধরেছে</span>
+                    <span id="count-answered" class="font-bold text-sm mt-0.5">0</span>
+                </button>
+                <button onclick="filterByStatus('কল ধরেনি')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition active:scale-95 shadow-sm border border-amber-200">
+                    <span class="mb-0.5 text-amber-500"><i class="fa-solid fa-phone-slash text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">কল ধরে নাই</span>
+                    <span id="count-no-answer" class="font-bold text-sm mt-0.5">0</span>
+                </button>
+                <button onclick="filterByStatus('ফোন বন্ধ/ব্যস্ত')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 transition active:scale-95 shadow-sm border border-rose-200">
+                    <span class="mb-0.5 text-rose-500"><i class="fa-solid fa-phone-flip text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">ফোন বন্ধ/ব্যস্ত</span>
+                    <span id="count-off-busy" class="font-bold text-sm mt-0.5">0</span>
+                </button>
+                <button onclick="filterByStatus('অন্যান্য')" class="flex flex-col items-center justify-center p-2 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 transition active:scale-95 shadow-sm border border-purple-200">
+                    <span class="mb-0.5 text-purple-500"><i class="fa-regular fa-comment-dots text-sm"></i></span>
+                    <span class="text-[10px] md:text-xs">অন্যান্য মন্তব্য</span>
+                    <span id="count-custom" class="font-bold text-sm mt-0.5">0</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- স্টিকি সার্চ বার -->
+    <div id="sticky-search-wrapper" class="sticky top-0 z-40 bg-white transition-all duration-200 shadow-sm">
+        <div class="max-w-4xl mx-auto p-3 relative">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                </div>
+                <input type="text" id="search-input" oninput="handleSearch()" placeholder="আইডি, নাম বা মোবাইল নাম্বার দিয়ে শিক্ষার্থী খুঁজুন..." class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm shadow-sm placeholder-gray-400">
+                <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- মূল কনটেন্ট এরিয়া -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 relative z-0">
+
+        <!-- হোম ভিউ: ক্লাস লিস্ট -->
+        <div id="home-view" class="space-y-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h2 class="text-lg font-bold text-gray-700"><i class="fa-solid fa-graduation-cap mr-2 text-emerald-600"></i>সকল ক্লাসের তালিকা</h2>
+                <span class="text-xs text-gray-500 font-medium">ক্লাসের সংখ্যা: <span id="class-count">০</span>টি</span>
+            </div>
+
+            <div id="class-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-xs text-blue-800 mt-6 leading-relaxed">
+                <p class="font-bold mb-1"><i class="fa-solid fa-circle-info mr-1"></i> ব্যবহার নির্দেশিকা ও লাইভ কল ট্র্যাকিং:</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>যেকোনো ক্লাসে ক্লিক করে শিক্ষার্থীদের তালিকা দেখুন ও বকেয়া ফি চেক করুন।</li>
+                    <li>সবুজ ফোন বাটন প্রেস করলে আপনার নামে লাইভ ট্র্যাকিং সিস্টেমে কলটি রেকর্ড হবে।</li>
+                    <li>নতুন শিক্ষার্থী বা বকেয়া যোগ করতে চাইলে শিক্ষার্থীর তালিকার উপরে থাকা <strong>"+" বাটন</strong> টিপুন।</li>
+                    <li>শিক্ষার্থীর তথ্য সংশোধন বা ডিলিট করার জন্য যেকোনো শিক্ষার্থীর উপর <strong>ট্যাপ করে (ধরে) রাখুন</strong>। এতে সিলেকশন মোড চালু হবে।</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- স্টুডেন্ট লিস্ট ভিউ -->
+        <div id="student-view" class="hidden space-y-4">
+            <!-- টপবার -->
+            <div class="sticky top-[66px] z-30 flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                <button onclick="goBack()" class="flex items-center text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-md text-sm font-semibold transition active:scale-95">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> পিছনে
+                </button>
+                
+                <h3 id="current-view-title" class="text-sm md:text-md font-bold text-gray-800 truncate px-2">শিক্ষার্থী তালিকা</h3>
+                
+                <div class="flex items-center space-x-2">
+                    <button onclick="printSelectedClass()" title="প্রিন্ট করুন" class="flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white w-9 h-9 rounded-full shadow-md transition active:scale-95">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                    <!-- প্লাস মেনু -->
+                    <div class="relative inline-block text-left">
+                        <button onclick="togglePlusDropdown(event)" id="plus-dropdown-btn" class="flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white w-9 h-9 rounded-full shadow-md transition active:scale-95">
+                            <i class="fa-solid fa-plus text-lg"></i>
+                        </button>
+                        <div id="plus-dropdown-content" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1" role="menu">
+                                <button onclick="openAddStudentModal(); closePlusDropdown();" class="flex items-center w-full text-left px-4 py-2.5 text-xs md:text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 font-semibold" role="menuitem">
+                                    <i class="fa-solid fa-user-plus mr-2 text-emerald-600"></i> নতুন শিক্ষার্থী যুক্ত
+                                </button>
+                                <button onclick="openAddDueModal(); closePlusDropdown();" class="flex items-center w-full text-left px-4 py-2.5 text-xs md:text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-semibold" role="menuitem">
+                                    <i class="fa-solid fa-hand-holding-dollar mr-2 text-blue-600"></i> বকেয়া যুক্ত করুন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- লং প্রেস করলে এই অ্যাকশন বারটি আসবে -->
+            <div id="selection-action-bar" class="hidden bg-slate-800 text-white rounded-lg p-3 flex flex-wrap justify-between items-center gap-2 transition-all shadow-lg sticky top-[135px] z-20">
+                <div class="flex items-center space-x-3">
+                    <button onclick="exitSelectionMode()" class="text-gray-300 hover:text-white p-1 transition bg-slate-700 rounded-full w-7 h-7 flex items-center justify-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="text-sm font-bold text-emerald-400">
+                        <span id="selected-students-count">১</span> জন সিলেক্টেড
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="select-all-btn" onclick="toggleSelectAllBtn()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-md text-xs font-bold transition shadow active:scale-95">
+                        <i class="fa-solid fa-check-double mr-1"></i> সিলেক্ট অল
+                    </button>
+                    <!-- এডিট বাটন -->
+                    <button id="multi-edit-btn" onclick="editSelectedStudent()" class="hidden bg-amber-50 hover:bg-amber-400 text-white px-3 py-1.5 rounded-md text-xs font-bold transition shadow active:scale-95">
+                        <i class="fa-solid fa-pen-to-square"></i> এডিট
+                    </button>
+                    <!-- ডিলিট বাটন -->
+                    <button onclick="deleteSelectedStudents()" class="bg-rose-600 hover:bg-rose-500 text-white px-3 py-1.5 rounded-md text-xs font-bold transition shadow active:scale-95">
+                        <i class="fa-solid fa-trash-can"></i> ডিলিট
+                    </button>
+                </div>
+            </div>
+
+            <!-- শিক্ষার্থীদের টেবিল -->
+            <div class="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto no-scrollbar">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="checkbox-col px-3 py-3 text-center text-xs font-bold text-emerald-600 uppercase w-10">সিলেক্ট</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider w-12">রোল</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider w-20">আইডি</th>
+                                <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">নাম ও পিতা</th>
+                                <th class="px-3 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider w-28 whitespace-nowrap">বকেয়া (৳)</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider w-16 whitespace-nowrap">কল</th>
+                                <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider w-40 whitespace-nowrap">কলের অবস্থা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-table-body" class="bg-white divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+                <div id="no-students-message" class="hidden text-center py-12 text-gray-400">
+                    <i class="fa-regular fa-folder-open text-4xl mb-2 block text-gray-300"></i>
+                    কোনো তথ্য পাওয়া যায়নি
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- মডাল ১: নতুন শিক্ষার্থী যুক্ত করার মডাল -->
+    <div id="add-student-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" onclick="closeAddStudentModal()"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-lg mx-4 overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-lg"><i class="fa-solid fa-user-plus mr-2"></i>নতুন শিক্ষার্থী যুক্ত করুন</h4>
+                <button onclick="closeAddStudentModal()" class="text-white hover:text-emerald-100 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex border-b border-gray-200 bg-gray-50 text-sm font-semibold">
+                <button onclick="switchAddTab('single')" id="tab-single" class="w-1/2 py-2.5 text-center border-b-2 border-emerald-600 text-emerald-700">একক শিক্ষার্থী</button>
+                <button onclick="switchAddTab('bulk')" id="tab-bulk" class="w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700">একত্রে অ্যাড</button>
+            </div>
+
+            <div class="p-5 max-h-[75vh] overflow-y-auto no-scrollbar">
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">শিক্ষাবর্ষ (সাল)</label>
+                        <select id="add-student-year" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500">
+                            <option value="2026" selected>২০২৬ </option>
+                            <option value="2027">২০২৭</option>
+							 <option value="2028">২০২৮</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">শ্রেণি/ক্লাস</label>
+                        <select id="add-student-class" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500"></select>
+                    </div>
+                </div>
+
+                <div id="form-single-add" class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">আইডি</label>
+                            <input type="text" id="single-id" placeholder="যেমন: 3246" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">ক্রম:</label>
+                            <input type="number" id="single-roll" placeholder="যেমন: 1" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">শিক্ষার্থীর নাম</label>
+                        <input type="text" id="single-name" placeholder="যেমন: আয়েশা খাতুন" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">পিতার নাম</label>
+                        <input type="text" id="single-father" placeholder="যেমন: মোঃ ফারুক হোসেন" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল </label>
+                            <input type="text" id="single-phone" placeholder="যেমন: 01700000000" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">বকেয়া </label>
+                            <input type="number" id="single-due" value="0" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="form-bulk-add" class="hidden space-y-2">
+                    <p class="text-xs text-gray-500 mb-2 leading-relaxed">
+                        নিচে প্রতি লাইনে শিক্ষার্থীর তথ্য কমা (,) দিয়ে আলাদা করে লিখুন:<br>
+                        <strong class="text-emerald-700">ID, রোল, নাম, পিতার নাম, মোবাইল, বকেয়া</strong><br>
+                        <code class="bg-gray-100 p-1.5 rounded text-rose-600 font-mono text-[10px] block mt-1 leading-normal">
+                            3250, 1, নাম, পিতার নাম, 01700000000, 1000<br>
+                        </code>
+                    </p>
+                    <textarea id="bulk-add-input" rows="6" placeholder="3250, 1, নাম, পিতা, মোবাইল, বকেয়া" class="w-full p-2 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none resize-none"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-2 text-sm font-semibold mt-5">
+                    <button onclick="closeAddStudentModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">বাতিল</button>
+                    <button onclick="saveNewStudent()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">যুক্ত করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- মডাল ২: বকেয়া যুক্ত করার মডাল -->
+    <div id="add-due-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" onclick="closeAddDueModal()"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-md mx-4 overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-md"><i class="fa-solid fa-hand-holding-dollar mr-2"></i>বকেয়া যুক্ত করুন</h4>
+                <button onclick="closeAddDueModal()" class="text-white hover:text-blue-100 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="flex border-b border-gray-200 bg-gray-50 text-sm font-semibold">
+                <button onclick="switchDueTab('single')" id="tab-due-single" class="w-1/2 py-2.5 text-center border-b-2 border-blue-600 text-blue-700">একক শিক্ষার্থী</button>
+                <button onclick="switchDueTab('all')" id="tab-due-all" class="w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700">সকল শিক্ষার্থী (একত্রে)</button>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <div id="due-single-field" class="space-y-1">
+                    <label class="block text-xs font-bold text-gray-600">শিক্ষার্থী নির্বাচন করুন *</label>
+                    <select id="due-student-select" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"></select>
+                </div>
+
+                <div id="due-all-field" class="hidden bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-lg text-xs leading-relaxed">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> সতর্কবার্তা: এই অপশনটি ব্যবহার করলে বর্তমানে নির্বাচিত শ্রেণির <strong>সকল শিক্ষার্থীর</strong> সাথে নিচের বকেয়া টাকা যোগ হয়ে যাবে।
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-gray-600">বকেয়া </label>
+                    <input type="number" id="due-amount" placeholder="যেমন: ৫০০" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <div class="flex justify-end space-x-2 text-sm font-semibold pt-2">
+                    <button onclick="closeAddDueModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">বাতিল</button>
+                    <button onclick="saveDueAmount()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">বকেয়া যোগ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- মডাল ৩: শিক্ষার্থী তথ্য এডিট করার মডাল -->
+    <div id="edit-student-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" onclick="closeEditStudentModal()"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-md mx-4 overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-md"><i class="fa-solid fa-user-gear mr-2"></i>শিক্ষার্থীর তথ্য সংশোধন </h4>
+                <button onclick="closeEditStudentModal()" class="text-white hover:text-amber-100 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 space-y-3">
+                <input type="hidden" id="edit-target-id">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">আইডি </label>
+                        <input type="text" id="edit-id" class="w-full p-2 border border-gray-300 bg-gray-100 rounded-lg text-sm outline-none cursor-not-allowed" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ক্রম </label>
+                        <input type="number" id="edit-roll" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-amber-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">শিক্ষার্থীর নাম </label>
+                    <input type="text" id="edit-name" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-amber-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">পিতার নাম</label>
+                    <input type="text" id="edit-father" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-amber-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল </label>
+                        <input type="text" id="edit-phone" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-amber-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">বকেয়া </label>
+                        <input type="number" id="edit-due" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-amber-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-2 text-sm font-semibold pt-3">
+                    <button onclick="closeEditStudentModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">বাতিল</button>
+                    <button onclick="updateStudentInfo()" class="px-4 py-2 bg-amber-50 hover:bg-amber-600 text-white rounded-lg transition">সংরক্ষণ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- মডাল ৪: কাস্টম অন্যান্য মন্তব্য ইনপুট মডাল -->
+    <div id="custom-status-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/55 backdrop-blur-sm" onclick="closeCustomStatusModal()"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden transform transition-all">
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-md"><i class="fa-regular fa-keyboard mr-2"></i>অন্যান্য (নিজে লিখুন)</h4>
+                <button onclick="closeCustomStatusModal()" class="text-white hover:text-purple-100 text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5">
+                <label for="custom-status-input" class="block text-xs text-gray-500 mb-2 font-medium">এই শিক্ষার্থীর জন্য নির্দিষ্ট কলের স্ট্যাটাস বা মন্তব্যটি টাইপ করুন:</label>
+                <input type="text" id="custom-status-input" placeholder="যেমন: কাল সকালে ফোন দিতে হবে, ভুল নম্বর ইত্যাদি..." class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none mb-4 font-semibold">
+                
+                <div class="flex justify-end space-x-2 text-sm font-semibold">
+                    <button onclick="closeCustomStatusModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">বাতিল</button>
+                    <button onclick="saveCustomStatus()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg hover:shadow transition">সংরক্ষণ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- গোপন এডমিন পাসওয়ার্ড মডাল -->
+    <div id="admin-password-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeAdminPasswordModal()"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden transform transition-all border border-gray-200">
+            <div class="bg-slate-800 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-md"><i class="fa-solid fa-lock mr-2 text-yellow-400"></i>এডমিন নিরাপত্তা প্রবেশ</h4>
+                <button onclick="closeAdminPasswordModal()" class="text-gray-300 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 space-y-4">
+                <p class="text-xs text-gray-500 font-medium leading-relaxed">এডমিন প্যানেল পাসওয়ার্ডটি প্রদান করুন:</p>
+                <div>
+                    <input type="password" id="admin-password-input" placeholder="পাসওয়ার্ড লিখুন..." class="w-full p-3 border border-gray-300 rounded-lg text-sm text-center font-mono focus:ring-2 focus:ring-slate-700 outline-none font-extrabold text-lg tracking-widest">
+                </div>
+                <div class="flex justify-end space-x-2 text-sm font-semibold">
+                    <button onclick="closeAdminPasswordModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">বাতিল</button>
+                    <button onclick="verifyAdminPassword()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition active:scale-95 shadow">প্রবেশ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- জেনেরিক কনফার্মেশন মডাল -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="bg-white rounded-xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden border border-gray-100">
+            <div class="p-5 text-center space-y-4">
+                <i class="fa-solid fa-circle-exclamation text-rose-500 text-5xl"></i>
+                <h4 class="font-bold text-lg text-gray-800" id="confirm-title">আপনি কি নিশ্চিত?</h4>
+                <p class="text-sm text-gray-500" id="confirm-message">এই কাজটি আর ফিরিয়ে আনা সম্ভব হবে না।</p>
+                <div class="flex items-center justify-center space-x-2 pt-2">
+                    <button id="confirm-cancel-btn" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-semibold text-sm transition">বাতিল</button>
+                    <button id="confirm-action-btn" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-semibold text-sm transition shadow-md">সম্পন্ন করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- গোপন এডমিন প্যানেল ওভারলে (এডমিন ভিউ) -->
+    <div id="admin-dashboard-view" class="fixed inset-0 z-40 bg-gray-100 hidden flex flex-col">
+        <header class="bg-slate-900 text-white p-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-user-shield text-yellow-400 text-2xl"></i>
+                <div>
+                    <h2 class="text-md md:text-lg font-bold">মাদ্রাসা এডমিন কন্ট্রোল ড্যাশবোর্ড</h2>
+                    <p class="text-[10px] text-gray-400">লাইভ ট্র্যাকিং এবং ব্যবহারকারী রিপোর্ট</p>
+                </div>
+            </div>
+            <button onclick="closeAdminDashboard()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-1.5 rounded-lg text-xs font-bold transition active:scale-95 flex items-center gap-1">
+                <i class="fa-solid fa-circle-chevron-left"></i> অ্যাপে ফিরুন
+            </button>
+        </header>
+
+        <div class="flex-grow p-4 md:p-6 overflow-y-auto max-w-5xl w-full mx-auto space-y-6">
+            <!-- এডমিন ট্যাব সুইচার -->
+            <div class="flex space-x-2 border-b border-gray-200">
+                <button onclick="switchAdminTab('users')" id="tab-admin-users" class="py-2.5 px-4 text-xs md:text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition">সিস্টেম ব্যবহারকারীগণ (ইউজার লগ)</button>
+                <button onclick="switchAdminTab('calls')" id="tab-admin-calls" class="py-2.5 px-4 text-xs md:text-sm font-bold text-gray-500 hover:text-gray-700 transition">লাইভ কল ট্র্যাকিং লিস্ট (Call Logs)</button>
+            </div>
+
+            <!-- এডমিন ট্যাব ১: ব্যবহারকারীগণ -->
+            <div id="admin-users-panel" class="space-y-4">
+                <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-gray-700"><i class="fa-solid fa-users-gear mr-1.5 text-slate-600"></i>লগইনকৃত ইউজার তালিকা</h3>
+                        <span class="text-xs bg-slate-200 text-slate-800 px-2 py-0.5 rounded-full font-bold" id="admin-user-count">০ জন</span>
+                    </div>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 border-b text-gray-500 font-bold">
+                                    <th class="p-3">ইউজার আইডি (UID)</th>
+                                    <th class="p-3">নাম</th>
+                                    <th class="p-3">মোবাইল নম্বর / ইমেল</th>
+                                    <th class="p-3">লগইন মাধ্যম</th>
+                                    <th class="p-3 text-right">প্রবেশের সময়</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-table-body" class="divide-y divide-gray-100">
+                                <tr><td colspan="5" class="text-center p-4 text-gray-400">কোনো ব্যবহারকারীর তথ্য পাওয়া যায়নি</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- এডমিন ট্যাব ২: লাইভ কল ট্র্যাকিং -->
+            <div id="admin-calls-panel" class="hidden space-y-4">
+                <div class="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-sm text-gray-700"><i class="fa-solid fa-phone-volume mr-1.5 text-emerald-600"></i>সাম্প্রতিক কলিং লগসমূহ</h3>
+                        <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold" id="admin-call-count">০ টি</span>
+                    </div>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 border-b text-gray-500 font-bold">
+                                    <th class="p-3">কলকারী (শিক্ষক)</th>
+                                    <th class="p-3">শিক্ষার্থীর নাম</th>
+                                    <th class="p-3">শ্রেণি</th>
+                                    <th class="p-3">মোবাইল</th>
+                                    <th class="p-3 text-right">কলের সময়কাল</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-calls-table-body" class="divide-y divide-gray-100">
+                                <tr><td colspan="5" class="text-center p-4 text-gray-400">কোনো কল রেকর্ড এখনও পাওয়া যায়নি</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK ইন্টিগ্রেশন (ES Module) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // ফায়ারবেস কনফিগারেশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2rGcCvT16z-nlXzM9wRXdTzTfRRIChjk",
+            authDomain: "madrasa-app-91dd6.firebaseapp.com",
+            projectId: "madrasa-app-91dd6",
+            storageBucket: "madrasa-app-91dd6.firebasestorage.app",
+            messagingSenderId: "281211783935",
+            appId: "1:281211783935:web:29d80daf6fe72fe6f89aca",
+            measurementId: "G-93VMQT1M3V"
+        };
+
+        // Firebase এবং Firestore ইনিশিয়েলাইজেশন
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // গ্লোবাল ভেরিয়েবলসমূহ
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'madrasa-app-91dd6';
+        let classes = [];
+        let students = [];
+        let currentOpenClassId = null;
+        let activeStudentIdForCustomStatus = null;
+        let currentAddTab = "single";
+        let currentDueTab = "single"; 
+        let isOfflineMode = false; // অফলাইন মোড ট্র্যাকার
+        
+        let isSelectionMode = false;
+        let pressTimer = null;
+        let allSelected = false;
+
+        // গোপন ট্যাপ কাউন্টার
+        let headerTapCount = 0;
+        let headerTapTimer = null;
+
+        // ক্লাসের চমৎকার কালার লিস্ট
+        const classColors = [
+            { bg: "bg-red-50 hover:bg-red-100", text: "text-red-700", border: "border-red-200", badge: "bg-red-600", lightText: "text-red-500" },
+            { bg: "bg-amber-50 hover:bg-amber-100", text: "text-amber-700", border: "border-amber-200", badge: "bg-amber-600", lightText: "text-amber-500" },
+            { bg: "bg-emerald-50 hover:bg-emerald-100", text: "text-emerald-700", border: "border-emerald-200", badge: "bg-emerald-600", lightText: "text-emerald-500" },
+            { bg: "bg-blue-50 hover:bg-blue-100", text: "text-blue-700", border: "border-blue-200", badge: "bg-blue-600", lightText: "text-blue-500" },
+            { bg: "bg-indigo-50 hover:bg-indigo-100", text: "text-indigo-700", border: "border-indigo-200", badge: "bg-indigo-600", lightText: "text-indigo-500" },
+            { bg: "bg-purple-50 hover:bg-purple-100", text: "text-purple-700", border: "border-purple-200", badge: "bg-purple-600", lightText: "text-purple-500" },
+            { bg: "bg-pink-50 hover:bg-pink-100", text: "text-pink-700", border: "border-pink-200", badge: "bg-pink-600", lightText: "text-pink-500" },
+            { bg: "bg-cyan-50 hover:bg-cyan-100", text: "text-cyan-700", border: "border-cyan-200", badge: "bg-cyan-600", lightText: "text-cyan-500" }
+        ];
+
+        // ডেমো ক্লাসের তালিকা
+        const initialClasses = [
+			{ id: "class_1", name: "তাকমীল" },
+			{ id: "class_2", name: "ফজীলাত ২য়" },
+			{ id: "class_3", name: "ফজীলাত ১ম" },
+			{ id: "class_4", name: "সানাবিয়্যাহ ২য়" },
+			{ id: "class_5", name: "সানাবিয়্যাহ ২য় (২য় দল)" },
+			{ id: "class_6", name: "সানাবিয়্যাহ ১ম (১ম দল)" },
+			{ id: "class_7", name: "সানাবিয়্যাহ ১ম (২য় দল)" },
+			{ id: "class_8", name: "সানাবিয়্যাহ ১ম বর্ষ (৩য় দল)" },
+			{ id: "class_9", name: "মুতাওয়াসসিতাহ ২য় (১ম দল)" },
+			{ id: "class_10", name: "মুতাওয়াসসিতাহ ২য় (২য় দল)" },
+			{ id: "class_11", name: "মুতাওয়াসসিতাহ ২য় (৩য় দল)" },
+			{ id: "class_12", name: "মুতাওয়াসসিতাহ ২য় (৪র্থ দল)" },
+			{ id: "class_13", name: "মুতাওয়াসসিতাহ ১ম (১ম দল)" },
+			{ id: "class_14", name: "মুতাওয়াসসিতাহ ১ম (২য় দল)" },
+			{ id: "class_15", name: "মুতাওয়াসসিতাহ ১ম (৩য় দল)" },
+			{ id: "class_16", name: "মুতাওয়াসসিতাহ ১ম বর্ষ (৪র্থ দল)" },
+			{ id: "class_17", name: "মুতাওয়াসসিতাহ (৫ম দল)" },
+			{ id: "class_18", name: "খুছুছী (১ম দল)" },
+			{ id: "class_19", name: "খুছুছী (২য় দল)" },
+			{ id: "class_20", name: "খুছুছী (৩য় দল)" },
+			{ id: "class_21", name: "ইবতেদাইয়্যাহ ৫ম (১ম দল)" },
+			{ id: "class_22", name: "ইবতেদাইয়্যাহ ৫ম (২য় দল)" },
+			{ id: "class_23", name: "ইবতেদাইয়্যাহ ৪র্থ (১ম দল)" },
+			{ id: "class_24", name: "ইবতেদাইয়্যাহ ৪র্থ (২য় দল)" },
+			{ id: "class_25", name: "ইবতেদাইয়্যাহ ৪র্থ বর্ষ (৩য় দল)" },
+			{ id: "class_26", name: "ইবতেদাইয়্যাহ ৩য় (১ম দল)" },
+			{ id: "class_27", name: "ইবতেদাইয়্যাহ ৩য় (২য় দল)" },
+			{ id: "class_28", name: "ইবতেদাইয়্যাহ ৩য় বর্ষ (৩য় দল)" },
+			{ id: "class_32", name: "হিফ্‌জ খানা (হাফেজা রহীমা)" },
+			{ id: "class_33", name: "হিফ্‌জ খানা (হাফেজা সামিরা)" },
+			{ id: "class_34", name: "হিফ্‌জ খানা (হাফেজা আয়েশা)" },
+			{ id: "class_35", name: "হিফ্‌জ খানা (হাফেজা মারয়াম)" },
+			{ id: "class_36", name: "হিফ্‌জ খানা (হাফেজা সুমাইয়া)" },
+			{ id: "class_37", name: "হিফ্‌জ খানা (হাফেজা নাঈমা)" },
+			{ id: "class_43", name: "হিফজ নাজেরা (উম্মে হাবীবা)" },
+			{ id: "class_44", name: "হিফজ নাজেরা (আলেমা ফারজানা)" }
+		];
+
+        // ডেমো শিক্ষার্থীদের ডাটা
+        const initialStudents = [
+            { roll: 1, id: "3246", name: "মারুফা আক্তার", father: "মোঃ ফারুক হোসেন", phone: "01724469835", due: 1550, classId: "class_1", status: "সব" },
+        ];
+
+        // অফলাইন লোকাল স্টোরেজ ডাটা সেভ করার মেথড
+        function saveOfflineData() {
+            if (!isOfflineMode) return;
+            localStorage.setItem('offline_classes', JSON.stringify(classes));
+            localStorage.setItem('offline_students', JSON.stringify(students));
+        }
+
+        // অফলাইন মোড এক্টিভেট করা (Bypass Option)
+        window.enterOfflineMode = function() {
+            isOfflineMode = true;
+            document.getElementById('current-caller-name').innerText = "গেস্ট (অফলাইন ডেমো)";
+            document.getElementById('caller-identity').value = "গেস্ট (অফলাইন ডেমো)";
+            document.getElementById('auth-screen').classList.add('hidden');
+            
+            const cachedClasses = localStorage.getItem('offline_classes');
+            const cachedStudents = localStorage.getItem('offline_students');
+            
+            if (cachedClasses && cachedStudents) {
+                classes = JSON.parse(cachedClasses);
+                students = JSON.parse(cachedStudents);
+            } else {
+                classes = [...initialClasses];
+                students = [...initialStudents];
+            }
+            
+            updateCounters();
+            renderClasses();
+            showToast("অফলাইন/ডেমো মোডে প্রবেশ করেছেন! সফলভাবে ডাটা রেন্ডার হয়েছে।", "info");
+        }
+
+        // ১. রিয়েল-টাইম ডাটা সিঙ্ক ফাংশন
+        let classUnsubscribe = null;
+        let studentUnsubscribe = null;
+        let logsUnsubscribe = null;
+        let usersUnsubscribe = null;
+
+        function startDatabaseListeners() {
+            if (isOfflineMode) return;
+
+            // পূর্বের লিসেনারগুলো সচল থাকলে আনসাবস্ক্রাইব করা হবে
+            if (classUnsubscribe) classUnsubscribe();
+            if (studentUnsubscribe) studentUnsubscribe();
+            if (logsUnsubscribe) logsUnsubscribe();
+            if (usersUnsubscribe) usersUnsubscribe();
+
+            // ক্লাসের ডাটা রিয়েল-টাইম লিসেনার
+            const classesRef = collection(db, 'artifacts', appId, 'public', 'data', 'classes');
+            classUnsubscribe = onSnapshot(classesRef, (snapshot) => {
+                classes = [];
+                snapshot.forEach(doc => {
+                    classes.push(doc.data());
+                });
+                if (classes.length === 0) {
+                    // প্রথম রান হলে ডেমো ক্লাস ডাটা ইনিশিয়েলাইজ করা হবে
+                    initializeDatabaseData();
+                } else {
+                    renderClasses();
+                }
+            }, (error) => console.error("ক্লাস ডাটা লোড ব্যর্থ:", error));
+
+            // শিক্ষার্থীদের ডাটা রিয়েল-টাইম লিসেনার
+            const studentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'students');
+            studentUnsubscribe = onSnapshot(studentsRef, (snapshot) => {
+                students = [];
+                snapshot.forEach(doc => {
+                    students.push(doc.data());
+                });
+                
+                // শিক্ষার্থীদের রোল সর্ট করা
+                students.sort((a, b) => Number(a.roll) - Number(b.roll));
+
+                updateCounters();
+                renderClasses();
+                if (currentOpenClassId) {
+                    renderStudentTable();
+                } else {
+                    const query = document.getElementById('search-input').value.trim();
+                    if (query !== "") {
+                        handleSearch();
+                    }
+                }
+            }, (error) => console.error("শিক্ষার্থী ডাটা লোড ব্যর্থ:", error));
+
+            // লাইভ কলিং লগ লিসেনার (ফর এডমিন প্যানেল)
+            const callLogsRef = collection(db, 'artifacts', appId, 'public', 'data', 'call_logs');
+            logsUnsubscribe = onSnapshot(callLogsRef, (snapshot) => {
+                const logs = [];
+                snapshot.forEach(doc => {
+                    logs.push(doc.data());
+                });
+                
+                // সময় অনুযায়ী রিভার্স সর্ট করা (নতুন সবার উপরে)
+                logs.sort((a, b) => new Date(b.time) - new Date(a.time));
+                renderAdminLogs(logs);
+            }, (error) => console.error("কল লগ রিড ব্যর্থ:", error));
+
+            // সিস্টেম ব্যবহারকারী লিস্ট লিসেনার (ফর এডমিন প্যানেল)
+            const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+            usersUnsubscribe = onSnapshot(usersRef, (snapshot) => {
+                const systemUsers = [];
+                snapshot.forEach(doc => {
+                    systemUsers.push(doc.data());
+                });
+                systemUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                renderAdminUsers(systemUsers);
+            }, (error) => console.error("ইউজার লিস্ট রিড ব্যর্থ:", error));
+        }
+
+        // ক্লাউড ডাটাবেস প্রথমবার সেটআপ করার জন্য
+        async function initializeDatabaseData() {
+            for (const cls of initialClasses) {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', cls.id), cls);
+            }
+            for (const std of initialStudents) {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', std.id), std);
+            }
+        }
+
+        // শিক্ষার্থীদের ডাটা ক্লাউডে সিঙ্ক করা
+        async function syncStudentsToFirebase() {
+            if (isOfflineMode) {
+                saveOfflineData();
+                return;
+            }
+            const user = auth.currentUser;
+            if (!user) return;
+            for (const std of students) {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', std.id), std);
+            }
+        }
+
+        // ২. অথেনটিকেশন এবং ট্যাব স্যুইচ মেথডস
+        window.switchAuthTab = function(tab) {
+            document.getElementById('tab-auth-guest').className = "w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+            document.getElementById('tab-auth-login').className = "w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+            document.getElementById('tab-auth-signup').className = "w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+            
+            document.getElementById('auth-guest-form').classList.add('hidden');
+            document.getElementById('auth-login-form').classList.add('hidden');
+            document.getElementById('auth-signup-form').classList.add('hidden');
+
+            if (tab === 'guest') {
+                document.getElementById('tab-auth-guest').className = "w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer";
+                document.getElementById('auth-guest-form').classList.remove('hidden');
+            } else if (tab === 'login') {
+                document.getElementById('tab-auth-login').className = "w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer";
+                document.getElementById('auth-login-form').classList.remove('hidden');
+            } else if (tab === 'signup') {
+                document.getElementById('tab-auth-signup').className = "w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer";
+                document.getElementById('auth-signup-form').classList.remove('hidden');
+            }
+        }
+
+        // গেস্ট লগইন হ্যান্ডেলার (নাম ও মোবাইল)
+        window.handleGuestLogin = async function() {
+            const name = document.getElementById('guest-name').value.trim();
+            const phone = document.getElementById('guest-phone').value.trim();
+
+            if (!name || !phone) {
+                showToast("দয়া করে নাম এবং মোবাইল নম্বর দুটিই পূরণ করুন!", "error");
+                return;
+            }
+
+            if (phone.length < 11 || !phone.startsWith('01')) {
+                showToast("দয়া করে সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন!", "error");
+                return;
+            }
+
+            try {
+                // Rule 3: Auth first, and await it
+                const userCredential = await signInAnonymously(auth);
+                const user = userCredential.user;
+                
+                if (user) {
+                    const timestamp = new Date().toLocaleString("bn-BD", {timeZone: "Asia/Dhaka"});
+                    // ব্যবহারকারীর সেশন রেকর্ড করা
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
+                        uid: user.uid,
+                        name: name,
+                        phone: phone,
+                        login_method: 'গেস্ট (মোবাইল)',
+                        timestamp: timestamp
+                    });
+
+                    // প্রাইভেট প্রোফাইল তৈরি
+                    await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info'), {
+                        name: name,
+                        phone: phone,
+                        email: 'গেস্ট অ্যাকাউন্ট'
+                    });
+
+                    showToast("সফলভাবে সিস্টেমে প্রবেশ করেছেন!", "success");
+                }
+            } catch (err) {
+                console.error(err);
+                let msg = "প্রবেশ করতে সমস্যা হয়েছে।";
+                if (err.code === "auth/operation-not-allowed") {
+                    msg = "Firebase Console-এ Anonymous Authentication চালু করুন!";
+                } else if (err.code === "auth/network-request-failed") {
+                    msg = "ইন্টারনেট কানেকশন চেক করুন!";
+                }
+                showToast(msg + " (" + err.message + ")", "error");
+            }
+        }
+
+        // ইমেইল লগইন হ্যান্ডেলার
+        window.handleEmailLogin = async function() {
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+
+            if (!email || !password) {
+                showToast("ইমেইল এবং পাসওয়ার্ড দুটিই দিন!", "error");
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                if (user) {
+                    // প্রোফাইল চেক
+                    const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
+                    const profileSnap = await getDoc(profileRef);
+                    let name = email.split('@')[0];
+                    let phone = 'তথ্য নেই';
+                    
+                    if (profileSnap.exists()) {
+                        const prof = profileSnap.data();
+                        name = prof.name || name;
+                        phone = prof.phone || phone;
+                    }
+
+                    const timestamp = new Date().toLocaleString("bn-BD", {timeZone: "Asia/Dhaka"});
+                    // ব্যবহারকারীর লাইভ সেশন রাইট
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
+                        uid: user.uid,
+                        name: name,
+                        phone: phone,
+                        login_method: email,
+                        timestamp: timestamp
+                    });
+
+                    showToast("লগইন সফল হয়েছে!", "success");
+                }
+            } catch (err) {
+                console.error(err);
+                let msg = "ভুল ইমেল অথবা পাসওয়ার্ড দেওয়া হয়েছে!";
+                showToast(msg + " (" + err.message + ")", "error");
+            }
+        }
+
+        // ইমেইল দিয়ে অ্যাকাউন্ট তৈরি
+        window.handleEmailSignup = async function() {
+            const name = document.getElementById('signup-name').value.trim();
+            const phone = document.getElementById('signup-phone').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value.trim();
+
+            if (!name || !phone || !email || !password) {
+                showToast("সবগুলো ঘর পূরণ করা আবশ্যক!", "error");
+                return;
+            }
+
+            if (password.length < 6) {
+                showToast("পাসওয়ার্ড নূন্যতম ৬ অক্ষরের হতে হবে!", "error");
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                if (user) {
+                    const timestamp = new Date().toLocaleString("bn-BD", {timeZone: "Asia/Dhaka"});
+                    
+                    // প্রাইভেট প্রোফাইল রাইট
+                    await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info'), {
+                        name: name,
+                        phone: phone,
+                        email: email
+                    });
+
+                    // ব্যবহারকারীর লাইভ সেশন রাইট
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
+                        uid: user.uid,
+                        name: name,
+                        phone: phone,
+                        login_method: email,
+                        timestamp: timestamp
+                    });
+
+                    showToast("সাফল্যের সাথে আপনার অ্যাকাউন্ট তৈরি হয়েছে!", "success");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("অ্যাকাউন্ট তৈরি করা যায়নি! সঠিক ইমেল ফরম্যাট ব্যবহার করুন। (" + err.message + ")", "error");
+            }
+        }
+
+        // লগআউট হ্যান্ডেলার
+        window.handleUserLogout = function() {
+            showConfirmModal("আপনি কি এই ডিভাইস থেকে লগআউট করতে চান?", async () => {
+                try {
+                    if (isOfflineMode) {
+                        isOfflineMode = false;
+                        document.getElementById('auth-screen').classList.remove('hidden');
+                        showToast("লগআউট সফল হয়েছে।", "info");
+                        return;
+                    }
+                    await signOut(auth);
+                    showToast("লগআউট সফল হয়েছে।", "info");
+                } catch (err) {
+                    console.error("লগআউট ত্রুটি:", err);
+                }
+            });
+        }
+
+        // ৩. ফায়ারবেস অথেনটিকেশন স্টেট চেক এবং মনিটরিং
+        onAuthStateChanged(auth, async (user) => {
+            if (isOfflineMode) return;
+            
+            if (user) {
+                // প্রোফাইল থেকে শিক্ষকের নাম নিয়ে হেডারে দেখাবে
+                const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
+                const profileSnap = await getDoc(profileRef);
+                
+                let displayName = "শিক্ষক";
+                if (profileSnap.exists()) {
+                    displayName = profileSnap.data().name || "নামহীন শিক্ষক";
+                } else if (user.email) {
+                    displayName = user.email.split('@')[0];
+                }
+
+                document.getElementById('current-caller-name').innerText = displayName;
+                document.getElementById('caller-identity').value = displayName;
+
+                // অথেনটিকেশন ওয়াল বন্ধ করে অ্যাপ ওপেন করুন
+                document.getElementById('auth-screen').classList.add('hidden');
+                
+                // ক্লাউড ডেটাবেস লিসেনার চালু করুন
+                startDatabaseListeners();
+            } else {
+                // লগইন না থাকলে ওয়াল প্রদর্শন করা হবে
+                document.getElementById('current-caller-name').innerText = "-";
+                document.getElementById('caller-identity').value = "";
+                document.getElementById('auth-screen').classList.remove('hidden');
+                
+                // লিসেনার বন্ধ করুন
+                if (classUnsubscribe) classUnsubscribe();
+                if (studentUnsubscribe) studentUnsubscribe();
+                if (logsUnsubscribe) logsUnsubscribe();
+                if (usersUnsubscribe) usersUnsubscribe();
+            }
+        });
+
+        // ৪. গোপন এডমিন প্যানেল কন্ট্রোল মেথডস
+        window.handleHeaderTap = function() {
+            headerTapCount++;
+            clearTimeout(headerTapTimer);
+            
+            // ৪ বার ক্লিক করার মধ্যে সর্বোচ্চ ১.৫ সেকেন্ড বিরতি নেওয়া যাবে
+            headerTapTimer = setTimeout(() => {
+                headerTapCount = 0;
+            }, 1500);
+
+            if (headerTapCount === 4) {
+                headerTapCount = 0;
+                openAdminPasswordModal();
+            }
+        }
+
+        window.openAdminPasswordModal = function() {
+            document.getElementById('admin-password-input').value = "";
+            document.getElementById('admin-password-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('admin-password-input').focus();
+            }, 300);
+        }
+
+        window.closeAdminPasswordModal = function() {
+            document.getElementById('admin-password-modal').classList.add('hidden');
+        }
+
+        window.verifyAdminPassword = function() {
+            const pass = document.getElementById('admin-password-input').value.trim();
+            if (pass === "9522") {
+                closeAdminPasswordModal();
+                openAdminDashboard();
+            } else {
+                showToast("ভুল এডমিন পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।", "error");
+            }
+        }
+
+        window.openAdminDashboard = function() {
+            document.getElementById('admin-dashboard-view').classList.remove('hidden');
+            switchAdminTab('users');
+        }
+
+        window.closeAdminDashboard = function() {
+            document.getElementById('admin-dashboard-view').classList.add('hidden');
+        }
+
+        window.switchAdminTab = function(tab) {
+            document.getElementById('tab-admin-users').className = "py-2.5 px-4 text-xs md:text-sm font-bold text-gray-500 hover:text-gray-700 transition cursor-pointer";
+            document.getElementById('tab-admin-calls').className = "py-2.5 px-4 text-xs md:text-sm font-bold text-gray-500 hover:text-gray-700 transition cursor-pointer";
+            
+            document.getElementById('admin-users-panel').classList.add('hidden');
+            document.getElementById('admin-calls-panel').classList.add('hidden');
+
+            if (tab === 'users') {
+                document.getElementById('tab-admin-users').className = "py-2.5 px-4 text-xs md:text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition cursor-pointer";
+                document.getElementById('admin-users-panel').classList.remove('hidden');
+            } else {
+                document.getElementById('tab-admin-calls').className = "py-2.5 px-4 text-xs md:text-sm font-bold border-b-2 border-slate-900 text-slate-900 transition cursor-pointer";
+                document.getElementById('admin-calls-panel').classList.remove('hidden');
+            }
+        }
+
+        // এডমিন প্যানেলে লগইন করা ব্যবহারকারী রেন্ডার করা
+        function renderAdminUsers(usersList) {
+            const tbody = document.getElementById('admin-users-table-body');
+            document.getElementById('admin-user-count').innerText = `${usersList.length} জন`;
+            
+            tbody.innerHTML = "";
+            if (usersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400">কোনো ব্যবহারকারীর তথ্য পাওয়া যায়নি</td></tr>`;
+                return;
+            }
+
+            usersList.forEach(user => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                        <td class="p-3 font-mono text-[10px] text-gray-500 font-bold">${user.uid}</td>
+                        <td class="p-3 font-semibold text-gray-800">${user.name}</td>
+                        <td class="p-3 font-mono font-semibold text-slate-600">${user.phone || 'তথ্য নেই'}</td>
+                        <td class="p-3 text-xs text-slate-500 font-semibold">${user.login_method}</td>
+                        <td class="p-3 text-right text-xs text-gray-500 font-bold">${user.timestamp}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // এডমিন প্যানেলে লাইভ কল ট্র্যাক লগ রেন্ডার
+        function renderAdminLogs(logsList) {
+            const tbody = document.getElementById('admin-calls-table-body');
+            document.getElementById('admin-call-count').innerText = `${logsList.length} টি`;
+            
+            tbody.innerHTML = "";
+            if (logsList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400">কোনো কল রেকর্ড এখনও পাওয়া যায়নি</td></tr>`;
+                return;
+            }
+
+            logsList.forEach(log => {
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-100 hover:bg-emerald-50/30 transition">
+                        <td class="p-3 font-bold text-slate-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user text-xs text-emerald-600"></i> ${log.caller_name}
+                        </td>
+                        <td class="p-3 font-semibold text-gray-700">${log.student_name}</td>
+                        <td class="p-3 text-xs text-slate-500 font-semibold">${log.student_class}</td>
+                        <td class="p-3 font-mono font-bold text-cyan-600">${log.phone_number}</td>
+                        <td class="p-3 text-right text-xs text-gray-500 font-bold">${log.time}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // কাস্টম কনফার্মেশন মডাল হ্যান্ডলার
+        let onConfirmAction = null;
+        window.showConfirmModal = function(message, onConfirm) {
+            document.getElementById('confirm-message').innerText = message;
+            onConfirmAction = onConfirm;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        };
+
+        document.getElementById('confirm-cancel-btn').addEventListener('click', () => {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            onConfirmAction = null;
+        });
+
+        document.getElementById('confirm-action-btn').addEventListener('click', () => {
+            if (onConfirmAction) {
+                onConfirmAction();
+            }
+            document.getElementById('confirm-modal').classList.add('hidden');
+            onConfirmAction = null;
+        });
+
+        // ৫. মূল অ্যাপের অন্যান্য প্রয়োজনীয় মেথডসমূহ
+        window.setupStickyBehavior = function() {
+            const stickySearchWrapper = document.getElementById('sticky-search-wrapper');
+            const mainHeader = document.getElementById('main-header');
+            const countersSection = document.getElementById('counters-section');
+
+            window.addEventListener('scroll', function() {
+                if (!document.getElementById('student-view').classList.contains('hidden')) {
+                    stickySearchWrapper.classList.add('sticky-search-active');
+                    return;
+                }
+                const triggerHeight = mainHeader.offsetHeight + countersSection.offsetHeight;
+                if (window.scrollY >= triggerHeight) {
+                    stickySearchWrapper.classList.add('sticky-search-active');
+                } else {
+                    stickySearchWrapper.classList.remove('sticky-search-active');
+                }
+            });
+        }
+
+        window.updateCounters = function() {
+            const counts = { total: students.length, called: 0, answered: 0, noAnswer: 0, offBusy: 0, custom: 0 };
+            const standardStatuses = ["সব", "কল করা হয়েছে", "কল ধরেছে", "কল ধরেনি", "ফোন বন্ধ", "ফোন ব্যস্ত"];
+
+            students.forEach(s => {
+                if (s.status === "কল করা হয়েছে") counts.called++;
+                else if (s.status === "কল ধরেছে") counts.answered++;
+                else if (s.status === "কল ধরেনি") counts.noAnswer++;
+                else if (s.status === "ফোন বন্ধ" || s.status === "ফোন ব্যস্ত") counts.offBusy++;
+                else if (s.status !== "সব" && !standardStatuses.includes(s.status)) counts.custom++;
+            });
+
+            document.getElementById('count-total').innerText = counts.total;
+            document.getElementById('count-called').innerText = counts.called;
+            document.getElementById('count-answered').innerText = counts.answered;
+            document.getElementById('count-no-answer').innerText = counts.noAnswer;
+            document.getElementById('count-off-busy').innerText = counts.offBusy;
+            document.getElementById('count-custom').innerText = counts.custom;
+        }
+
+        window.renderClasses = function() {
+            const grid = document.getElementById('class-grid');
+            grid.innerHTML = "";
+            document.getElementById('class-count').innerText = classes.length;
+
+            classes.forEach((cls, idx) => {
+                const color = classColors[idx % classColors.length];
+                const classStudents = students.filter(s => s.classId === cls.id);
+                const totalDue = classStudents.reduce((sum, s) => sum + Number(s.due), 0);
+
+                const card = document.createElement('button');
+                card.onclick = () => renderStudents(cls.id);
+                card.className = `p-3 rounded-xl border ${color.border} ${color.bg} text-left flex flex-col justify-between transition hover:shadow-md active:scale-95 duration-200 h-28`;
+                card.innerHTML = `
+                    <div class="flex items-start justify-between w-full">
+                        <span class="font-bold ${color.text} text-sm line-clamp-2 leading-tight">${cls.name}</span>
+                        <span class="text-[10px] text-white px-1.5 py-0.5 rounded-full font-bold ${color.badge} shrink-0 ml-1">${classStudents.length} জন</span>
+                    </div>
+                    <div class="mt-2">
+                        <div class="text-[10px] ${color.lightText} font-semibold">বকেয়া ফি</div>
+                        <div class="text-xs font-bold text-gray-700">৳ ${totalDue.toLocaleString('bn-BD')}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        window.renderStudents = function(classId) {
+            currentOpenClassId = classId;
+            const cls = classes.find(c => c.id === classId);
+            document.getElementById('current-view-title').innerText = cls ? `${cls.name} (${students.filter(s => s.classId === classId).length} জন)` : "শিক্ষার্থী তালিকা";
+            
+            exitSelectionMode();
+            renderStudentTable();
+            toggleHeaderAndCounters(false);
+            
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('student-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.renderStudentTable = function(filteredData = null) {
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = ''; 
+
+            let displayStudents = filteredData ? filteredData : students.filter(s => s.classId === currentOpenClassId);
+
+            if (displayStudents.length === 0) {
+                document.getElementById('no-students-message').classList.remove('hidden');
+            } else {
+                document.getElementById('no-students-message').classList.add('hidden');
+            }
+
+            displayStudents.forEach((student, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition border-b border-gray-100 user-select-none";
+                
+                tr.setAttribute("onmousedown", `handlePointerDown(event, '${student.id}')`);
+                tr.setAttribute("ontouchstart", `handlePointerDown(event, '${student.id}')`);
+                tr.setAttribute("onmouseup", "clearTimer()");
+                tr.setAttribute("onmouseleave", "clearTimer()");
+                tr.setAttribute("ontouchend", "clearTimer()");
+                tr.setAttribute("ontouchmove", "clearTimer()");
+                tr.setAttribute("onclick", `handleRowClick(event, '${student.id}')`);
+                
+                const isCustom = !["সব", "কল করা হয়েছে", "কল ধরেছে", "কল ধরেনি", "ফোন বন্ধ", "ফোন ব্যস্ত"].includes(student.status);
+
+                let selectColorClass = "bg-gray-100 border-gray-300 text-gray-800";
+                if (student.status === "কল করা হয়েছে") {
+                    selectColorClass = "bg-blue-100 border-blue-300 text-blue-800";
+                } else if (student.status === "কল ধরেছে") {
+                    selectColorClass = "bg-emerald-100 border-emerald-300 text-emerald-800 font-bold";
+                } else if (student.status === "কল ধরেনি") {
+                    selectColorClass = "bg-amber-100 border-amber-300 text-amber-800";
+                } else if (student.status === "ফোন বন্ধ" || student.status === "ফোন ব্যস্ত") {
+                    selectColorClass = "bg-rose-100 border-rose-300 text-rose-800";
+                } else if (student.status !== "সব" && isCustom) {
+                    selectColorClass = "bg-purple-100 border-purple-300 text-purple-800";
+                }
+
+                tr.innerHTML = `
+                    <td class="checkbox-col px-3 py-3 text-center transition-all duration-300">
+                        <input type="checkbox" data-id="${student.id}" class="student-select-checkbox w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 cursor-pointer pointer-events-none">
+                    </td>
+                    <td class="px-3 py-3 text-center font-bold text-gray-600 font-mono">${student.roll || '-'}</td>
+                    <td class="px-3 py-3 font-mono text-xs text-gray-700 font-bold">${student.id}</td>
+                    <td class="px-4 py-3">
+                        <div class="font-bold text-gray-800">নাম: ${student.name}</div>
+                        <div class="text-xs text-gray-500 font-semibold mt-0.5">পিতা: ${student.father || 'পিতার নাম নেই'}</div>
+                    </td>
+                    <td class="px-3 py-3 text-right font-extrabold text-rose-600 font-mono">৳ ${student.due.toLocaleString('bn-BD')}</td>
+                    <td class="px-3 py-3 text-center">
+                        <a href="tel:${student.phone}" onclick="triggerLiveCallLog('${student.id}', '${student.name}', '${student.phone}', event)" class="inline-flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 active:scale-90 text-white w-9 h-9 rounded-full shadow transition-all" title="কল করুন">
+                            <i class="fa-solid fa-phone text-sm"></i>
+                        </a>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                        <select onchange="handleDropdownStatusChange('${student.id}', this.value)" class="w-full ${selectColorClass} border text-xs rounded-lg p-2 font-bold cursor-pointer focus:ring-2 focus:ring-emerald-500">
+                            <option value="সব" ${student.status === 'সব' ? 'selected' : ''}>কল করা হয়নি</option>
+                            <option value="কল করা হয়েছে" ${student.status === 'কল করা হয়েছে' ? 'selected' : ''}>কল করা হয়েছে</option>
+                            <option value="কল ধরেছে" ${student.status === 'কল ধরেছে' ? 'selected' : ''}>কল ধরেছে</option>
+                            <option value="কল ধরেনি" ${student.status === 'কল ধরেনি' ? 'selected' : ''}>কল ধরেনি</option>
+                            <option value="ফোন বন্ধ" ${student.status === 'ফোন বন্ধ' ? 'selected' : ''}>ফোন বন্ধ</option>
+                            <option value="ফোন ব্যস্ত" ${student.status === 'ফোন ব্যস্ত' ? 'selected' : ''}>ফোন ব্যস্ত</option>
+                            <option value="CUSTOM_WRITE" ${isCustom ? 'selected' : ''}>+ অন্যান্য (লিখুন) ${isCustom ? `(${student.status})` : ''}</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            if(isSelectionMode) checkSelectAllStatus();
+        }
+
+        window.triggerLiveCallLog = function(studentId, studentName, phone, event) {
+            let callerName = document.getElementById('caller-identity').value.trim();
+            if (!callerName) {
+                callerName = "নামহীন কলকারী";
+            }
+
+            if (isOfflineMode) {
+                showToast("অফলাইন মোড: লাইভ কলিং ডাটাবেজে ট্র্যাক হয়নি তবে কল করা হয়েছে।", "info");
+                return;
+            }
+
+            const callLogsRef = collection(db, 'artifacts', appId, 'public', 'data', 'call_logs');
+            const timestamp = new Date().toLocaleString("bn-BD", {timeZone: "Asia/Dhaka"});
+            const cls = classes.find(c => c.id === currentOpenClassId);
+            const className = cls ? cls.name : "অজানা ক্লাস";
+
+            const logData = {
+                caller_name: callerName,
+                student_id: studentId,
+                student_name: studentName,
+                student_class: className,
+                phone_number: phone,
+                time: timestamp
+            };
+
+            const docId = crypto.randomUUID();
+            setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'call_logs', docId), logData).then(() => {
+                const studentIdx = students.findIndex(s => s.id === studentId);
+                if (studentIdx > -1 && students[studentIdx].status === "সব") {
+                    students[studentIdx].status = "কল করা হয়েছে";
+                    syncStudentsToFirebase();
+                }
+            }).catch(err => {
+                console.error("লগ সেভ হতে সমস্যা হয়েছে: ", err);
+            });
+        };
+
+        window.handlePointerDown = function(e, studentId) {
+            if(e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION' || e.target.closest('select') || e.target.closest('a')) return;
+            if (isSelectionMode) return;
+            
+            clearTimer();
+            pressTimer = setTimeout(() => {
+                activateSelectionMode(studentId);
+            }, 600);
+        }
+
+        window.clearTimer = function() {
+            if (pressTimer) {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+            }
+        }
+
+        window.handleRowClick = function(e, studentId) {
+            if(e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION' || e.target.closest('select') || e.target.closest('a')) return;
+
+            if (isSelectionMode) {
+                const cb = document.querySelector(`.student-select-checkbox[data-id="${studentId}"]`);
+                if (cb) {
+                    cb.checked = !cb.checked;
+                    checkSelectAllStatus();
+                }
+            }
+        }
+
+        window.activateSelectionMode = function(studentId) {
+            if (!isSelectionMode) {
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+            
+            isSelectionMode = true;
+            document.body.classList.add('selection-active');
+            
+            const cb = document.querySelector(`.student-select-checkbox[data-id="${studentId}"]`);
+            if (cb) {
+                cb.checked = true;
+            }
+            checkSelectAllStatus();
+        }
+
+        window.exitSelectionMode = function() {
+            isSelectionMode = false;
+            document.body.classList.remove('selection-active');
+            allSelected = false;
+            
+            const checkboxes = document.querySelectorAll('.student-select-checkbox');
+            checkboxes.forEach(cb => cb.checked = false);
+            
+            document.getElementById('selection-action-bar').classList.add('hidden');
+        }
+
+        window.toggleSelectAllBtn = function() {
+            const checkboxes = document.querySelectorAll('.student-select-checkbox');
+            allSelected = !allSelected;
+            checkboxes.forEach(cb => cb.checked = allSelected);
+            checkSelectAllStatus();
+        }
+
+        window.checkSelectAllStatus = function() {
+            if (!isSelectionMode) return;
+
+            const checkboxes = document.querySelectorAll('.student-select-checkbox');
+            const checkedBoxes = document.querySelectorAll('.student-select-checkbox:checked');
+            const actionBar = document.getElementById('selection-action-bar');
+            const selectedCountSpan = document.getElementById('selected-students-count');
+            const editBtn = document.getElementById('multi-edit-btn');
+            const selectAllBtn = document.getElementById('select-all-btn');
+
+            actionBar.classList.remove('hidden');
+            selectedCountSpan.innerText = checkedBoxes.length;
+
+            if (checkedBoxes.length === checkboxes.length && checkboxes.length > 0) {
+                allSelected = true;
+                selectAllBtn.innerHTML = `<i class="fa-solid fa-check mr-1"></i> আনসিলেক্ট অল`;
+            } else {
+                allSelected = false;
+                selectAllBtn.innerHTML = `<i class="fa-solid fa-check-double mr-1"></i> সিলেক্ট অল`;
+            }
+
+            if (checkedBoxes.length === 1) {
+                editBtn.classList.remove('hidden');
+            } else {
+                editBtn.classList.add('hidden');
+            }
+        }
+
+        window.editSelectedStudent = function() {
+            const checkedBox = document.querySelector('.student-select-checkbox:checked');
+            if (!checkedBox) return;
+            const studentId = checkedBox.getAttribute('data-id');
+            triggerRowEdit(studentId);
+        }
+
+        window.triggerRowEdit = function(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            document.getElementById('edit-target-id').value = student.id;
+            document.getElementById('edit-id').value = student.id;
+            document.getElementById('edit-roll').value = student.roll || '';
+            document.getElementById('edit-name').value = student.name;
+            document.getElementById('edit-father').value = student.father || '';
+            document.getElementById('edit-phone').value = student.phone;
+            document.getElementById('edit-due').value = student.due || 0;
+
+            document.getElementById('edit-student-modal').classList.remove('hidden');
+        }
+
+        window.deleteSelectedStudents = function() {
+            const checkboxes = document.querySelectorAll('.student-select-checkbox:checked');
+            if (checkboxes.length === 0) {
+                showToast("কোনো শিক্ষার্থী নির্বাচন করা হয়নি!", "error");
+                return;
+            }
+
+            showConfirmModal(`আপনি কি নিশ্চিতভাবে নির্বাচিত ${checkboxes.length} জন শিক্ষার্থীকে ডিলিট করতে চান?`, () => {
+                checkboxes.forEach(cb => {
+                    const studentId = cb.getAttribute('data-id');
+                    const index = students.findIndex(s => s.id === studentId);
+                    if (index !== -1) {
+                        students.splice(index, 1);
+                    }
+                });
+
+                syncStudentsToFirebase();
+                showToast(`${checkboxes.length} জন শিক্ষার্থী সফলভাবে ডিলিট করা হয়েছে।`, "success");
+                
+                exitSelectionMode();
+                if (currentOpenClassId) {
+                    renderStudentTable();
+                } else {
+                    handleSearch();
+                }
+            });
+        }
+
+        window.handleDropdownStatusChange = function(studentId, value) {
+            if (value === "CUSTOM_WRITE") {
+                openCustomStatusModal(studentId);
+            } else {
+                updateStudentStatus(studentId, value);
+            }
+        }
+
+        window.togglePlusDropdown = function(event) {
+            event.stopPropagation();
+            const content = document.getElementById('plus-dropdown-content');
+            content.classList.toggle('hidden');
+        }
+
+        window.closePlusDropdown = function() {
+            const content = document.getElementById('plus-dropdown-content');
+            if (content) content.classList.add('hidden');
+        }
+
+        window.toggleHeaderAndCounters = function(show) {
+            const header = document.getElementById('main-header');
+            const counters = document.getElementById('counters-section');
+            if (show) {
+                header.classList.remove('hidden');
+                counters.classList.remove('hidden');
+            } else {
+                header.classList.add('hidden');
+                counters.classList.add('hidden');
+            }
+        }
+
+        window.goBack = function() {
+            exitSelectionMode();
+            currentOpenClassId = null;
+            toggleHeaderAndCounters(true);
+            document.getElementById('student-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('search-input').value = "";
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            
+            updateCounters();
+            renderClasses();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.closeEditStudentModal = function() {
+            document.getElementById('edit-student-modal').classList.add('hidden');
+        }
+
+        window.updateStudentInfo = function() {
+            const targetId = document.getElementById('edit-target-id').value;
+            const roll = document.getElementById('edit-roll').value.trim();
+            const name = document.getElementById('edit-name').value.trim();
+            const father = document.getElementById('edit-father').value.trim();
+            const phone = document.getElementById('edit-phone').value.trim();
+            const due = document.getElementById('edit-due').value.trim();
+
+            if (!name || !phone || !roll) {
+                showToast("রোল, নাম এবং মোবাইল নম্বর অবশ্যই দিতে হবে!", "error");
+                return;
+            }
+
+            const idx = students.findIndex(s => s.id === targetId);
+            if (idx !== -1) {
+                students[idx].roll = Number(roll);
+                students[idx].name = name;
+                students[idx].father = father;
+                students[idx].phone = phone;
+                students[idx].due = Number(due) || 0;
+
+                syncStudentsToFirebase();
+                showToast("শিক্ষার্থীর তথ্য সফলভাবে সংশোধন করা হয়েছে।", "success");
+                closeEditStudentModal();
+                exitSelectionMode();
+                
+                if (currentOpenClassId) {
+                    renderStudentTable();
+                } else {
+                    handleSearch();
+                }
+            }
+        }
+
+        window.updateStudentStatus = function(studentId, newStatus) {
+            const studentIdx = students.findIndex(s => s.id === studentId);
+            if (studentIdx > -1) {
+                students[studentIdx].status = newStatus;
+                syncStudentsToFirebase();
+                updateCounters();
+                if (currentOpenClassId) {
+                    renderStudentTable();
+                } else {
+                    handleSearch();
+                }
+                const displayText = newStatus === "সব" ? "কল করা হয়নি" : newStatus;
+                showToast(`কলের অবস্থা '${displayText}' করা হয়েছে`, "success");
+            }
+        }
+
+        window.openCustomStatusModal = function(studentId) {
+            activeStudentIdForCustomStatus = studentId;
+            const student = students.find(s => s.id === studentId);
+            const stdStat = ["সব", "কল করা হয়েছে", "কল ধরেছে", "কল ধরেনি", "ফোন বন্ধ", "ফোন ব্যস্ত"];
+            document.getElementById('custom-status-input').value = student && !stdStat.includes(student.status) ? student.status : '';
+            document.getElementById('custom-status-modal').classList.remove('hidden');
+        }
+
+        window.closeCustomStatusModal = function() {
+            document.getElementById('custom-status-modal').classList.add('hidden');
+            activeStudentIdForCustomStatus = null;
+            if (currentOpenClassId) renderStudentTable();
+        }
+
+        window.saveCustomStatus = function() {
+            const val = document.getElementById('custom-status-input').value.trim();
+            if (val === '') {
+                showToast("অনুগ্রহ করে মন্তব্যটি টাইপ করুন!", "error");
+                return;
+            }
+            if (activeStudentIdForCustomStatus) {
+                updateStudentStatus(activeStudentIdForCustomStatus, val);
+                closeCustomStatusModal();
+            }
+        }
+
+        window.printSelectedClass = function() {
+            const cls = classes.find(c => c.id === currentOpenClassId);
+            if (!cls) {
+                showToast("প্রিন্ট করার জন্য প্রথমে যেকোনো একটি ক্লাস ওপেন করুন!", "error");
+                return;
+            }
+
+            document.getElementById('print-class-name').innerText = `শ্রেণি: ${cls.name}`;
+            const now = new Date();
+            document.getElementById('print-datetime').innerText = now.toLocaleString('bn-BD');
+
+            const printBody = document.getElementById('print-table-body');
+            printBody.innerHTML = '';
+
+            const currentClassStudents = students.filter(s => s.classId === currentOpenClassId);
+
+            if (currentClassStudents.length === 0) {
+                printBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 border border-gray-300">কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি</td></tr>`;
+            } else {
+                currentClassStudents.forEach((student, index) => {
+                    let displayStatus = student.status;
+                    if (student.status === "সব") displayStatus = "কল করা হয়নি";
+
+                    printBody.innerHTML += `
+                        <tr class="text-xs">
+                            <td class="border border-gray-300 px-3 py-1.5 text-center font-mono">${index + 1}</td>
+                            <td class="border border-gray-300 px-3 py-1.5 text-center font-mono">${student.id}</td>
+                            <td class="border border-gray-300 px-3 py-1.5 text-center font-mono">${student.roll || '-'}</td>
+                            <td class="border border-gray-300 px-4 py-1.5 font-bold">নাম: ${student.name}</td>
+                            <td class="border border-gray-300 px-4 py-1.5">পিতা: ${student.father || '-'}</td>
+                            <td class="border border-gray-300 px-3 py-1.5 text-right font-bold font-mono text-rose-600">${student.due.toLocaleString('bn-BD')}</td>
+                            <td class="border border-gray-300 px-4 py-1.5 text-center font-semibold">${displayStatus}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            window.print();
+        }
+
+        window.openAddDueModal = function() {
+            const currentClass = classes.find(c => c.id === currentOpenClassId);
+            if (!currentClass) {
+                showToast("প্রথমে যেকোনো ক্লাস সিলেক্ট করুন!", "error");
+                return;
+            }
+
+            const dueSelect = document.getElementById('due-student-select');
+            dueSelect.innerHTML = '';
+            
+            const classStudents = students.filter(s => s.classId === currentOpenClassId);
+            if (classStudents.length === 0) {
+                showToast("এই ক্লাসে কোনো শিক্ষার্থী নেই!", "error");
+                return;
+            }
+
+            classStudents.forEach(s => {
+                dueSelect.innerHTML += `<option value="${s.id}">নাম: ${s.name} (রোল: ${s.roll || '-'}, আইডি: ${s.id})</option>`;
+            });
+
+            switchDueTab('single');
+            document.getElementById('add-due-modal').classList.remove('hidden');
+        }
+
+        window.closeAddDueModal = function() {
+            document.getElementById('add-due-modal').classList.add('hidden');
+            document.getElementById('due-amount').value = '';
+        }
+
+        window.switchDueTab = function(tab) {
+            currentDueTab = tab;
+            if (tab === 'single') {
+                document.getElementById('tab-due-single').className = "w-1/2 py-2.5 text-center border-b-2 border-blue-600 text-blue-700 cursor-pointer font-bold";
+                document.getElementById('tab-due-all').className = "w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+                document.getElementById('due-single-field').classList.remove('hidden');
+                document.getElementById('due-all-field').classList.add('hidden');
+            } else {
+                document.getElementById('tab-due-all').className = "w-1/2 py-2.5 text-center border-b-2 border-blue-600 text-blue-700 cursor-pointer font-bold";
+                document.getElementById('tab-due-single').className = "w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+                document.getElementById('due-all-field').classList.remove('hidden');
+                document.getElementById('due-single-field').classList.add('hidden');
+            }
+        }
+
+        window.saveDueAmount = function() {
+            const amountInput = document.getElementById('due-amount').value.trim();
+            if (!amountInput || isNaN(amountInput) || Number(amountInput) <= 0) {
+                showToast("অনুগ্রহ করে সঠিক টাকা টাইপ করুন!", "error");
+                return;
+            }
+
+            const addedDue = Number(amountInput);
+
+            if (currentDueTab === 'single') {
+                const targetStudentId = document.getElementById('due-student-select').value;
+                const idx = students.findIndex(s => s.id === targetStudentId);
+                if (idx !== -1) {
+                    students[idx].due = (Number(students[idx].due) || 0) + addedDue;
+                }
+            } else {
+                students.forEach(s => {
+                    if (s.classId === currentOpenClassId) {
+                        s.due = (Number(s.due) || 0) + addedDue;
+                    }
+                });
+            }
+
+            syncStudentsToFirebase();
+            showToast("বকেয়া সফলভাবে যোগ করা হয়েছে।", "success");
+            closeAddDueModal();
+            renderStudentTable();
+        }
+
+        window.openAddStudentModal = function() {
+            const classSelect = document.getElementById('add-student-class');
+            classSelect.innerHTML = '';
+            classes.forEach(cls => {
+                classSelect.innerHTML += `<option value="${cls.id}" ${cls.id === currentOpenClassId ? 'selected' : ''}>${cls.name}</option>`;
+            });
+            document.getElementById('add-student-modal').classList.remove('hidden');
+        }
+
+        window.closeAddStudentModal = function() {
+            document.getElementById('add-student-modal').classList.add('hidden');
+            document.getElementById('single-id').value = '';
+            document.getElementById('single-roll').value = '';
+            document.getElementById('single-name').value = '';
+            document.getElementById('single-father').value = '';
+            document.getElementById('single-phone').value = '';
+            document.getElementById('single-due').value = '0';
+            document.getElementById('bulk-add-input').value = '';
+        }
+
+        window.switchAddTab = function(tab) {
+            currentAddTab = tab;
+            if (tab === 'single') {
+                document.getElementById('tab-single').className = "w-1/2 py-2.5 text-center border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer";
+                document.getElementById('tab-bulk').className = "w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+                document.getElementById('form-single-add').classList.remove('hidden');
+                document.getElementById('form-bulk-add').classList.add('hidden');
+            } else {
+                document.getElementById('tab-bulk').className = "w-1/2 py-2.5 text-center border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer";
+                document.getElementById('tab-single').className = "w-1/2 py-2.5 text-center text-gray-500 hover:text-gray-700 cursor-pointer";
+                document.getElementById('form-bulk-add').classList.remove('hidden');
+                document.getElementById('form-single-add').classList.add('hidden');
+            }
+        }
+
+        window.saveNewStudent = function() {
+            const classId = document.getElementById('add-student-class').value;
+            if (currentAddTab === 'single') {
+                const id = document.getElementById('single-id').value.trim();
+                const roll = document.getElementById('single-roll').value.trim();
+                const name = document.getElementById('single-name').value.trim();
+                const father = document.getElementById('single-father').value.trim();
+                const phone = document.getElementById('single-phone').value.trim();
+                const due = document.getElementById('single-due').value.trim();
+
+                if (!id || !name || !phone || !roll) {
+                    showToast("আইডি, রোল, নাম এবং ফোন অবশ্যই দিতে হবে!", "error");
+                    return;
+                }
+
+                if (students.some(s => s.id === id)) {
+                    showToast("এই আইডি নম্বরে ইতিমধ্যে শিক্ষার্থী রয়েছে!", "error");
+                    return;
+                }
+
+                students.push({ roll: Number(roll) || 0, id, name, father, phone, due: Number(due) || 0, classId, status: "সব" });
+            } else {
+                const bulkText = document.getElementById('bulk-add-input').value.trim();
+                if (!bulkText) {
+                    showToast("বাল্ক ডাটার ঘরটি ফাঁকা!", "error");
+                    return;
+                }
+                const lines = bulkText.split('\n');
+                lines.forEach(line => {
+                    const parts = line.split(',');
+                    if (parts.length >= 3) {
+                        const id = parts[0].trim();
+                        if (!students.some(s => s.id === id)) {
+                            students.push({
+                                id: id,
+                                roll: Number(parts[1].trim()) || 0,
+                                name: parts[2].trim(),
+                                father: parts[3] ? parts[3].trim() : '',
+                                phone: parts[4] ? parts[4].trim() : '',
+                                due: parts[5] ? Number(parts[5].trim()) : 0,
+                                classId,
+                                status: "সব"
+                            });
+                        }
+                    }
+                });
+            }
+
+            syncStudentsToFirebase();
+            showToast("শিক্ষার্থী সফলভাবে যুক্ত হয়েছে।", "success");
+            closeAddStudentModal();
+            updateCounters();
+            renderClasses();
+            if (currentOpenClassId) {
+                renderStudents(currentOpenClassId);
+            }
+        }
+
+        window.handleSearch = function() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clear-search-btn');
+            
+            exitSelectionMode();
+            
+            if (query === "") {
+                clearBtn.classList.add('hidden');
+                if (currentOpenClassId) {
+                    renderStudentTable();
+                } else {
+                    goBack();
+                }
+                return;
+            }
+            clearBtn.classList.remove('hidden');
+            const results = students.filter(s => s.id.toLowerCase().includes(query) || s.phone.includes(query) || s.name.toLowerCase().includes(query));
+            document.getElementById('current-view-title').innerText = `অনুসন্ধান ফলাফল (${results.length} জন)`;
+            renderStudentTable(results);
+            toggleHeaderAndCounters(false);
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('student-view').classList.remove('hidden');
+        }
+
+        window.clearSearch = function() {
+            document.getElementById('search-input').value = "";
+            handleSearch();
+        }
+
+        window.filterByStatus = function(statusName) {
+            let results = [];
+            const standardStatuses = ["সব", "কল করা হয়েছে", "কল ধরেছে", "কল ধরেনি", "ফোন বন্ধ", "ফোন ব্যস্ত"];
+
+            if (statusName === "সব") {
+                results = students;
+            } else if (statusName === "অন্যান্য") {
+                results = students.filter(s => s.status !== "সব" && !standardStatuses.includes(s.status));
+            } else if (statusName === "ফোন বন্ধ/ব্যস্ত") {
+                results = students.filter(s => s.status === "ফোন বন্ধ" || s.status === "ফোন ব্যস্ত");
+            } else {
+                results = students.filter(s => s.status === statusName);
+            }
+
+            document.getElementById('current-view-title').innerText = `${statusName} (${results.length} জন)`;
+            
+            exitSelectionMode();
+            renderStudentTable(results);
+            
+            toggleHeaderAndCounters(false);
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('student-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.showToast = function(message, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastText.innerText = message;
+            
+            if (type === "success") {
+                toastIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>`;
+            } else if (type === "error") {
+                toastIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-500 text-lg"></i>`;
+            } else {
+                toastIcon.innerHTML = `<i class="fa-solid fa-circle-info text-blue-400 text-lg"></i>`;
+            }
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // ইনিশিয়াল স্টিকি স্ক্রল ফাংশন কল
+        setupStickyBehavior();
+    </script>
+</body>
+</html>
