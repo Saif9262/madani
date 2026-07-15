@@ -121,22 +121,18 @@
 
             <!-- ট্যাব সুইচার -->
             <div class="flex border-b border-gray-200 bg-gray-50 text-xs md:text-sm font-bold">
-                <button onclick="switchAuthTab('guest')" id="tab-auth-guest" class="w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 cursor-pointer">নাম ও মোবাইল</button>
+                <button onclick="switchAuthTab('guest')" id="tab-auth-guest" class="w-1/3 py-3 text-center border-b-2 border-emerald-600 text-emerald-700 cursor-pointer">সরাসরি প্রবেশ</button>
                 <button onclick="switchAuthTab('login')" id="tab-auth-login" class="w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer">ইমেল লগইন</button>
                 <button onclick="switchAuthTab('signup')" id="tab-auth-signup" class="w-1/3 py-3 text-center text-gray-500 hover:text-gray-700 cursor-pointer">নতুন অ্যাকাউন্ট</button>
             </div>
 
             <div class="p-6 space-y-4 max-h-[65vh] overflow-y-auto no-scrollbar">
-                <!-- ১. নাম ও মোবাইল দিয়ে প্রবেশ (Guest) -->
+                <!-- ১. নাম দিয়ে সরাসরি প্রবেশ (Guest) -->
                 <div id="auth-guest-form" class="space-y-4">
-                    <p class="text-xs text-gray-500 leading-relaxed text-center">সহজে এবং দ্রুত প্রবেশের জন্য আপনার নাম এবং সচল মোবাইল নম্বর দিন। </p>
+                    <p class="text-xs text-gray-500 leading-relaxed text-center">সহজে এবং দ্রুত প্রবেশের জন্য আপনার নাম লিখুন।</p>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">আপনার সম্পূর্ণ নাম *</label>
-                        <input type="text" id="guest-name" placeholder="যেমন: মাও: ........" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল নাম্বার *</label>
-                        <input type="text" id="guest-phone" placeholder="যেমন: 017XXXXXXXX" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <input type="text" id="guest-name" placeholder="যেমন: মাও: সাইফুল্লাহ" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <button onclick="handleGuestLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition shadow-md active:scale-95 flex justify-center items-center gap-2">
                         <i class="fa-solid fa-right-to-bracket"></i> সরাসরি প্রবেশ করুন
@@ -150,15 +146,15 @@
                     </div>
 
                     <button onclick="enterOfflineMode()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-lg text-xs transition border border-slate-300 active:scale-95 flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-wifi-slash"></i> ডাটাবেজ ছাড়া (অফলাইন)
+                        <i class="fa-solid fa-wifi-slash"></i> ডাটাবেজ ছাড়া সরাসরি ব্যবহার করুন
                     </button>
                 </div>
 
-                <!-- ২. ইমেইল দিয়ে লগইন (Login) -->
+                <!-- ২. ইমেল দিয়ে লগইন (Login) -->
                 <div id="auth-login-form" class="hidden space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেইল </label>
-                        <input type="email" id="login-email" placeholder="example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেল এড্রেস *</label>
+                        <input type="email" id="login-email" placeholder="যেমন: example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">পাসওয়ার্ড *</label>
@@ -172,16 +168,12 @@
                 <!-- ৩. নতুন অ্যাকাউন্ট তৈরি (Signup) -->
                 <div id="auth-signup-form" class="hidden space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">আপনার পূর্ণ নাম </label>
-                        <input type="text" id="signup-name" placeholder="যেমন: মাও: ......" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">আপনার পূর্ণ নাম *</label>
+                        <input type="text" id="signup-name" placeholder="যেমন: মাও: সাইফুল্লাহ" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল নাম্বার </label>
-                        <input type="text" id="signup-phone" placeholder="যেমন: 017XXXXXXXX" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেইল </label>
-                        <input type="email" id="signup-email" placeholder="example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ইমেইল এড্রেস *</label>
+                        <input type="email" id="signup-email" placeholder="যেমন: example@domain.com" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-600 mb-1">পাসওয়ার্ড (নূন্যতম ৬ অক্ষর) *</label>
@@ -205,7 +197,7 @@
             <div class="flex flex-col items-center">
                 <i id="mosque-icon" class="fa-solid fa-mosque text-3xl mb-1 text-emerald-100 cursor-pointer hover:scale-105 active:scale-90 transition duration-150"></i>
                 <h1 id="madrasa-title" onclick="handleHeaderTap()" class="text-xl md:text-2xl font-bold cursor-pointer transition select-none hover:text-emerald-100" title="৪ বার ট্যাপ করলে এডমিন প্যানেল ওপেন হবে">জামেয়া ইমদাদিয়া (বালিকা শাখা) মাদানীনগর</h1>
-                <p class="text-[10px] md:text-sm text-emerald-100">মনিরামপুর, যশোর</p>
+                <p class="text-[10px] md:text-sm text-emerald-100">মনিরামপুর, যশোর <span id="sync-badge" class="bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded text-[8px] ml-1">লোকাল ডাটা</span></p>
             </div>
 
             <!-- ফোনকারী শিক্ষকের নাম ডিসপ্লে ও স্যুইচ অপশন -->
@@ -413,7 +405,7 @@
                 <div id="form-single-add" class="space-y-3">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">আইডি</label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">আইডি *</label>
                             <input type="text" id="single-id" placeholder="যেমন: 3246" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
                         </div>
                         <div>
@@ -422,7 +414,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">শিক্ষার্থীর নাম</label>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">শিক্ষার্থীর নাম *</label>
                         <input type="text" id="single-name" placeholder="যেমন: আয়েশা খাতুন" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
@@ -431,7 +423,7 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল </label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">মোবাইল *</label>
                             <input type="text" id="single-phone" placeholder="যেমন: 01700000000" class="w-full p-2 border border-gray-300 rounded-lg text-sm focus:ring-1 focus:ring-emerald-500 outline-none">
                         </div>
                         <div>
@@ -661,7 +653,7 @@
                             <thead>
                                 <tr class="bg-gray-100 border-b text-gray-500 font-bold">
                                     <th class="p-3">কলকারী (শিক্ষক)</th>
-                                    <th class="p-3">শিক্ষার্থীর নাম</th>
+                                    <th class="p-3">শিক্ষार्थियों নাম</th>
                                     <th class="p-3">শ্রেণি</th>
                                     <th class="p-3">মোবাইল</th>
                                     <th class="p-3 text-right">কলের সময়কাল</th>
@@ -681,7 +673,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-        import { getAuth, signInAnonymously, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ফায়ারবেস কনফিগারেশন
@@ -695,11 +687,23 @@
             measurementId: "G-0XK5V6WDV7"
         };
 
-        // Firebase এবং Firestore ইনিশিয়েলাইজেশন
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        // Firebase এবং Firestore ইনিশিয়েলাইজেশন (নিরাপদ ট্রাই-ক্যাচ সহ)
+        let app, db, auth;
+        let isFirebaseConnected = false;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            isFirebaseConnected = true;
+            document.getElementById('sync-badge').innerText = "ক্লাউড সিঙ্ক";
+            document.getElementById('sync-badge').className = "bg-emerald-500 text-white font-bold px-1.5 py-0.5 rounded text-[8px] ml-1";
+        } catch (e) {
+            console.error("ফায়ারবেস ইনিশিয়ালাইজেশন ব্যর্থ! লোকাল ডাটাবেজে চালিত হচ্ছে।", e);
+            isFirebaseConnected = false;
+            document.getElementById('sync-badge').innerText = "লোকাল মেমোরি";
+            document.getElementById('sync-badge').className = "bg-amber-500 text-white font-bold px-1.5 py-0.5 rounded text-[8px] ml-1";
+        }
 
         // গ্লোবাল ভেরিয়েবলসমূহ (মডিউল স্কোপড)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'madrasa-app-91dd6';
@@ -709,7 +713,7 @@
         let activeStudentIdForCustomStatus = null;
         let currentAddTab = "single";
         let currentDueTab = "single"; 
-        let isOfflineMode = false; // অফলাইন মোড ট্র্যাকার
+        let isOfflineMode = !isFirebaseConnected; // ফায়ারবেস অফলাইন হলে ডিফল্ট অফলাইন মোড
         
         let isSelectionMode = false;
         let pressTimer = null;
@@ -778,16 +782,15 @@
 
         // অফলাইন লোকাল স্টোরেজ ডাটা সেভ করার মেথড
         function saveOfflineData() {
-            if (!isOfflineMode) return;
             localStorage.setItem('offline_classes', JSON.stringify(classes));
             localStorage.setItem('offline_students', JSON.stringify(students));
         }
 
-        // অফলাইন মোড এক্টিভেট করা (Bypass Option)
+        // অফলাইন মোড এক্টিভেট করা (Bypass Option / Hybrid Mode)
         window.enterOfflineMode = function() {
             isOfflineMode = true;
-            document.getElementById('current-caller-name').innerText = "গেস্ট (অফলাইন ডেমো)";
-            document.getElementById('caller-identity').value = "গেস্ট (অফলাইন ডেমো)";
+            document.getElementById('current-caller-name').innerText = "গেস্ট ব্যবহারকারী (লোকাল মেমোরি)";
+            document.getElementById('caller-identity').value = "গেস্ট ব্যবহারকারী";
             document.getElementById('auth-screen').classList.add('hidden');
             
             const cachedClasses = localStorage.getItem('offline_classes');
@@ -801,20 +804,28 @@
                 students = [...initialStudents];
             }
             
+            document.getElementById('sync-badge').innerText = "লোকাল ডাটা";
+            document.getElementById('sync-badge').className = "bg-amber-500 text-white font-bold px-1.5 py-0.5 rounded text-[8px] ml-1";
+
             updateCounters();
             renderClasses();
-            showToast("অফলাইন/ডেমো মোডে প্রবেশ করেছেন! সফলভাবে ডাটা রেন্ডার হয়েছে।", "info");
+            showToast("লোকাল ডাটাবেজে সফলভাবে প্রবেশ করা হয়েছে!", "success");
         }
 
         // ডাটাবেজের রাইট কোটা অপ্টিমাইজড সেভ ফাংশন (সেভ লিমিট রোধে অত্যন্ত কার্যকর)
         async function saveStudentToFirebase(student) {
-            if (isOfflineMode) {
+            if (isOfflineMode || !isFirebaseConnected) {
                 saveOfflineData();
                 return;
             }
-            const user = auth.currentUser;
-            if (!user) return;
-            await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', student.id), student);
+            try {
+                const user = auth.currentUser;
+                if (!user) return;
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', student.id), student);
+            } catch (e) {
+                console.error("Firebase ডাটা সেভ ব্যর্থ! লোকাল ডাটা আপডেট হচ্ছে।", e);
+                saveOfflineData();
+            }
         }
 
         // রিয়েল-টাইম ডাটা সিঙ্ক ফাংশন
@@ -824,82 +835,95 @@
         let usersUnsubscribe = null;
 
         function startDatabaseListeners() {
-            if (isOfflineMode) return;
+            if (isOfflineMode || !isFirebaseConnected) return;
 
-            // পূর্বের লিসেনারগুলো সচল থাকলে আনসাবস্ক্রাইব করা হবে
-            if (classUnsubscribe) classUnsubscribe();
-            if (studentUnsubscribe) studentUnsubscribe();
-            if (logsUnsubscribe) logsUnsubscribe();
-            if (usersUnsubscribe) usersUnsubscribe();
+            try {
+                // পূর্বের লিসেনারগুলো সচল থাকলে আনসাবস্ক্রাইব করা হবে
+                if (classUnsubscribe) classUnsubscribe();
+                if (studentUnsubscribe) studentUnsubscribe();
+                if (logsUnsubscribe) logsUnsubscribe();
+                if (usersUnsubscribe) usersUnsubscribe();
 
-            // ক্লাসের ডাটা রিয়েল-টাইম লিসেনার
-            const classesRef = collection(db, 'artifacts', appId, 'public', 'data', 'classes');
-            classUnsubscribe = onSnapshot(classesRef, (snapshot) => {
-                classes = [];
-                snapshot.forEach(doc => {
-                    classes.push(doc.data());
-                });
-                if (classes.length === 0) {
-                    initializeDatabaseData();
-                } else {
-                    renderClasses();
-                }
-            }, (error) => console.error("ক্লাস ডাটা লোড ব্যর্থ:", error));
-
-            // শিক্ষার্থীদের ডাটা রিয়েল-টাইম লিসেনার
-            const studentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'students');
-            studentUnsubscribe = onSnapshot(studentsRef, (snapshot) => {
-                students = [];
-                snapshot.forEach(doc => {
-                    students.push(doc.data());
-                });
-                
-                // শিক্ষার্থীদের রোল সর্ট করা
-                students.sort((a, b) => Number(a.roll) - Number(b.roll));
-
-                updateCounters();
-                renderClasses();
-                if (currentOpenClassId) {
-                    renderStudentTable();
-                } else {
-                    const query = document.getElementById('search-input').value.trim();
-                    if (query !== "") {
-                        handleSearch();
+                // ক্লাসের ডাটা রিয়েল-টাইম লিসেনার
+                const classesRef = collection(db, 'artifacts', appId, 'public', 'data', 'classes');
+                classUnsubscribe = onSnapshot(classesRef, (snapshot) => {
+                    classes = [];
+                    snapshot.forEach(doc => {
+                        classes.push(doc.data());
+                    });
+                    if (classes.length === 0) {
+                        initializeDatabaseData();
+                    } else {
+                        renderClasses();
                     }
-                }
-            }, (error) => console.error("শিক্ষার্থী ডাটা লোড ব্যর্থ:", error));
-
-            // লাইভ কলিং লগ লিসেনার (ফর এডমিন প্যানেল)
-            const callLogsRef = collection(db, 'artifacts', appId, 'public', 'data', 'call_logs');
-            logsUnsubscribe = onSnapshot(callLogsRef, (snapshot) => {
-                const logs = [];
-                snapshot.forEach(doc => {
-                    logs.push(doc.data());
+                }, (error) => {
+                    console.error("ক্লাস ডাটা ক্লাউড লোড ব্যর্থ, অফলাইনে ব্যাক করা হচ্ছে।", error);
+                    enterOfflineMode();
                 });
-                
-                logs.sort((a, b) => new Date(b.time) - new Date(a.time));
-                renderAdminLogs(logs);
-            }, (error) => console.error("কল লগ রিড ব্যর্থ:", error));
 
-            // সিস্টেম ব্যবহারকারী লিস্ট লিসেনার (ফর এডমিন প্যানেল)
-            const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
-            usersUnsubscribe = onSnapshot(usersRef, (snapshot) => {
-                const systemUsers = [];
-                snapshot.forEach(doc => {
-                    systemUsers.push(doc.data());
-                });
-                systemUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                renderAdminUsers(systemUsers);
-            }, (error) => console.error("ইউজার লিস্ট রিড ব্যর্থ:", error));
+                // শিক্ষার্থীদের ডাটা রিয়েল-টাইম লিসেনার
+                const studentsRef = collection(db, 'artifacts', appId, 'public', 'data', 'students');
+                studentUnsubscribe = onSnapshot(studentsRef, (snapshot) => {
+                    students = [];
+                    snapshot.forEach(doc => {
+                        students.push(doc.data());
+                    });
+                    
+                    // শিক্ষার্থীদের রোল সর্ট করা
+                    students.sort((a, b) => Number(a.roll) - Number(b.roll));
+
+                    updateCounters();
+                    renderClasses();
+                    if (currentOpenClassId) {
+                        renderStudentTable();
+                    } else {
+                        const query = document.getElementById('search-input').value.trim();
+                        if (query !== "") {
+                            handleSearch();
+                        }
+                    }
+                }, (error) => console.error("শিক্ষার্থী ডাটা লোড ব্যর্থ:", error));
+
+                // লাইভ কলিং লগ লিসেনার (ফর এডমিন প্যানেল)
+                const callLogsRef = collection(db, 'artifacts', appId, 'public', 'data', 'call_logs');
+                logsUnsubscribe = onSnapshot(callLogsRef, (snapshot) => {
+                    const logs = [];
+                    snapshot.forEach(doc => {
+                        logs.push(doc.data());
+                    });
+                    
+                    logs.sort((a, b) => new Date(b.time) - new Date(a.time));
+                    renderAdminLogs(logs);
+                }, (error) => console.error("কল লগ রিড ব্যর্থ:", error));
+
+                //システム ব্যবহারকারী লিস্ট লিসেনার (ফর এডমিন প্যানেল)
+                const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'users');
+                usersUnsubscribe = onSnapshot(usersRef, (snapshot) => {
+                    const systemUsers = [];
+                    snapshot.forEach(doc => {
+                        systemUsers.push(doc.data());
+                    });
+                    systemUsers.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    renderAdminUsers(systemUsers);
+                }, (error) => console.error("ইউজার লিস্ট রিড ব্যর্থ:", error));
+            } catch (err) {
+                console.error("ফায়ারবেস লিসেনার রান করতে ব্যর্থ! লোকাল মোডে সুইচর করা হলো।");
+                enterOfflineMode();
+            }
         }
 
         // ক্লাউড ডাটাবেস প্রথমবার সেটআপ করার জন্য
         async function initializeDatabaseData() {
-            for (const cls of initialClasses) {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', cls.id), cls);
-            }
-            for (const std of initialStudents) {
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', std.id), std);
+            if (!isFirebaseConnected) return;
+            try {
+                for (const cls of initialClasses) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'classes', cls.id), cls);
+                }
+                for (const std of initialStudents) {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', std.id), std);
+                }
+            } catch(e) {
+                console.warn("ক্লাউড ইনিশিয়ালাইজেশন স্কিপ করা হয়েছে।");
             }
         }
 
@@ -925,62 +949,72 @@
             }
         }
 
-        // গেস্ট লগইন হ্যান্ডেলার (নাম ও মোবাইল)
+        // গেস্ট লগইন হ্যান্ডেলার (নাম দিয়ে সরাসরি প্রবেশ - নো-ফেইল পলিসি)
         window.handleGuestLogin = async function() {
             const name = document.getElementById('guest-name').value.trim();
-            const phone = document.getElementById('guest-phone').value.trim();
 
-            if (!name || !phone) {
-                showToast("দয়া করে নাম এবং মোবাইল নম্বর দুটিই পূরণ করুন!", "error");
+            if (!name) {
+                showToast("দয়া করে আপনার নাম পূরণ করুন!", "error");
                 return;
             }
 
-            if (phone.length < 11 || !phone.startsWith('01')) {
-                showToast("দয়া করে সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন!", "error");
+            // যদি ফায়ারবেস ব্লক থাকে বা কানেক্টেড না থাকে, তবে অটোমেটিক মেমোরি মোডে ডাইরেক্ট লগইন হবে
+            if (!isFirebaseConnected) {
+                isOfflineMode = true;
+                document.getElementById('current-caller-name').innerText = name;
+                document.getElementById('caller-identity').value = name;
+                document.getElementById('auth-screen').classList.add('hidden');
+                enterOfflineMode();
                 return;
             }
 
             try {
+                // RULE 3 - Auth Before Queries: ফায়ারবেসে প্রথমে অ্যানোনিমাসলি সাইন-ইন করে নিতে হবে
                 const userCredential = await signInAnonymously(auth);
                 const user = userCredential.user;
                 
                 if (user) {
                     const timestamp = new Date().toLocaleString("bn-BD", {timeZone: "Asia/Dhaka"});
+                    // অতঃপর ডেটাবেজে ইউজার স্টোর
                     await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
                         uid: user.uid,
                         name: name,
-                        phone: phone,
-                        login_method: 'গেস্ট (মোবাইল)',
+                        phone: 'গেস্ট ব্যবহারকারী',
+                        login_method: 'সরাসরি গেস্ট প্রবেশ',
                         timestamp: timestamp
                     });
 
                     await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info'), {
                         name: name,
-                        phone: phone,
+                        phone: '',
                         email: 'গেস্ট অ্যাকাউন্ট'
                     });
 
-                    showToast("সফলভাবে সিস্টেমে প্রবেশ করেছেন!", "success");
+                    showToast("গেস্ট হিসেবে সফলভাবে সিস্টেমে প্রবেশ করেছেন!", "success");
                 }
             } catch (err) {
-                console.error(err);
-                let msg = "প্রবেশ করতে সমস্যা হয়েছে।";
-                if (err.code === "auth/operation-not-allowed") {
-                    msg = "Firebase Console-এ Anonymous Authentication চালু করুন!";
-                } else if (err.code === "auth/network-request-failed") {
-                    msg = "ইন্টারনেট কানেকশন চেক করুন!";
-                }
-                showToast(msg + " (" + err.message + ")", "error");
+                console.warn("ফায়ারবেস অথেনটিকেশন আইফ্রেম/সিকিউরিটি পলিসিতে আটকে গেছে। বিকল্প লোকাল মোডে লগইন করা হচ্ছে।", err);
+                // ফেইল-সেফ মেথড: ডাটা লোড ব্যর্থ হলে লোকাল সেশনে লগইন
+                isOfflineMode = true;
+                document.getElementById('current-caller-name').innerText = name;
+                document.getElementById('caller-identity').value = name;
+                document.getElementById('auth-screen').classList.add('hidden');
+                enterOfflineMode();
             }
         }
 
-        // ইমেইল লগইন হ্যান্ডেলার
+        // ইমেইল দিয়ে লগইন হ্যান্ডেলার (লোকাল বাইপাস ব্যাকআপ সহ)
         window.handleEmailLogin = async function() {
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value.trim();
 
             if (!email || !password) {
-                showToast("ইমেইল এবং পাসওয়ার্ড দুটিই দিন!", "error");
+                showToast("ইমেল এবং পাসওয়ার্ড দুটিই দিন!", "error");
+                return;
+            }
+
+            if (!isFirebaseConnected) {
+                showToast("ফায়ারবেস অফলাইন! লোকাল বাইপাস মোডে গেস্ট লগইন ব্যবহার করুন।", "error");
                 return;
             }
 
@@ -1013,24 +1047,34 @@
                 }
             } catch (err) {
                 console.error(err);
-                showToast("ভুল ইমেল অথবা পাসওয়ার্ড দেওয়া হয়েছে! (" + err.message + ")", "error");
+                let msg = "ভুল ইমেল অথবা পাসওয়ার্ড দেওয়া হয়েছে।";
+                if (err.code === "auth/invalid-email") {
+                    msg = "সরল ও সঠিক ফরম্যাটে ইমেল এড্রেস দিন।";
+                } else if (err.code === "auth/network-request-failed" || err.message.includes("iframe")) {
+                    msg = "নেটওয়ার্ক এরর বা আইফ্রেম পলিসিতে লগইন ব্লক হয়েছে! সরাসরি গেস্ট লগইন বা অফলাইন মোড ব্যবহার করুন।";
+                }
+                showToast(msg, "error");
             }
         }
 
-        // ইমেইল দিয়ে অ্যাকাউন্ট তৈরি
+        // ইমেইল দিয়ে নতুন অ্যাকাউন্ট তৈরি
         window.handleEmailSignup = async function() {
             const name = document.getElementById('signup-name').value.trim();
-            const phone = document.getElementById('signup-phone').value.trim();
             const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value.trim();
 
-            if (!name || !phone || !email || !password) {
-                showToast("সবগুলো ঘর পূরণ করা আবশ্যক!", "error");
+            if (!name || !email || !password) {
+                showToast("নাম, ইমেল এবং পাসওয়ার্ড অবশ্যই পূরণ করতে হবে!", "error");
                 return;
             }
 
             if (password.length < 6) {
                 showToast("পাসওয়ার্ড নূন্যতম ৬ অক্ষরের হতে হবে!", "error");
+                return;
+            }
+
+            if (!isFirebaseConnected) {
+                showToast("ফায়ারবেস অফলাইন! লোকাল বাইপাস মোড ব্যবহার করুন।", "error");
                 return;
             }
 
@@ -1043,14 +1087,14 @@
                     
                     await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info'), {
                         name: name,
-                        phone: phone,
+                        phone: '',
                         email: email
                     });
 
                     await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', user.uid), {
                         uid: user.uid,
                         name: name,
-                        phone: phone,
+                        phone: 'নেই',
                         login_method: email,
                         timestamp: timestamp
                     });
@@ -1059,7 +1103,13 @@
                 }
             } catch (err) {
                 console.error(err);
-                showToast("অ্যাকাউন্ট তৈরি করা যায়নি! সঠিক ইমেল ফরম্যাট ব্যবহার করুন। (" + err.message + ")", "error");
+                let msg = "অ্যাকাউন্ট তৈরি করা যায়নি!";
+                if (err.code === "auth/email-already-in-use") {
+                    msg = "এই ইমেল দিয়ে ইতিমধ্যে অ্যাকাউন্ট খোলা হয়েছে!";
+                } else if (err.code === "auth/invalid-email") {
+                    msg = "সঠিক ফরম্যাটে ইমেল এড্রেস টাইপ করুন!";
+                }
+                showToast(msg, "error");
             }
         }
 
@@ -1067,7 +1117,7 @@
         window.handleUserLogout = function() {
             showConfirmModal("আপনি কি এই ডিভাইস থেকে লগআউট করতে চান?", async () => {
                 try {
-                    if (isOfflineMode) {
+                    if (isOfflineMode || !isFirebaseConnected) {
                         isOfflineMode = false;
                         document.getElementById('auth-screen').classList.remove('hidden');
                         showToast("লগআউট সফল হয়েছে।", "info");
@@ -1082,36 +1132,44 @@
         }
 
         // ফায়ারবেস অথেনটিকেশন স্টেট চেক এবং মনিটরিং
-        onAuthStateChanged(auth, async (user) => {
-            if (isOfflineMode) return;
-            
-            if (user) {
-                const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
-                const profileSnap = await getDoc(profileRef);
+        if (isFirebaseConnected) {
+            onAuthStateChanged(auth, async (user) => {
+                if (isOfflineMode) return;
                 
-                let displayName = "শিক্ষক";
-                if (profileSnap.exists()) {
-                    displayName = profileSnap.data().name || "নামহীন শিক্ষক";
-                } else if (user.email) {
-                    displayName = user.email.split('@')[0];
+                if (user) {
+                    const profileRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'info');
+                    const profileSnap = await getDoc(profileRef);
+                    
+                    let displayName = "শিক্ষক";
+                    if (profileSnap.exists()) {
+                        displayName = profileSnap.data().name || "নামহীন শিক্ষক";
+                    } else if (user.email) {
+                        displayName = user.email.split('@')[0];
+                    }
+
+                    document.getElementById('current-caller-name').innerText = displayName;
+                    document.getElementById('caller-identity').value = displayName;
+
+                    document.getElementById('auth-screen').classList.add('hidden');
+                    startDatabaseListeners();
+                } else {
+                    document.getElementById('current-caller-name').innerText = "-";
+                    document.getElementById('caller-identity').value = "";
+                    document.getElementById('auth-screen').classList.remove('hidden');
+                    
+                    if (classUnsubscribe) classUnsubscribe();
+                    if (studentUnsubscribe) studentUnsubscribe();
+                    if (logsUnsubscribe) logsUnsubscribe();
+                    if (usersUnsubscribe) usersUnsubscribe();
                 }
-
-                document.getElementById('current-caller-name').innerText = displayName;
-                document.getElementById('caller-identity').value = displayName;
-
-                document.getElementById('auth-screen').classList.add('hidden');
-                startDatabaseListeners();
-            } else {
-                document.getElementById('current-caller-name').innerText = "-";
-                document.getElementById('caller-identity').value = "";
-                document.getElementById('auth-screen').classList.remove('hidden');
-                
-                if (classUnsubscribe) classUnsubscribe();
-                if (studentUnsubscribe) studentUnsubscribe();
-                if (logsUnsubscribe) logsUnsubscribe();
-                if (usersUnsubscribe) usersUnsubscribe();
-            }
-        });
+            });
+        } else {
+            // যদি ফায়ারবেস সম্পূর্ণ অফলাইন থাকে, প্রাথমিক ডেমো ক্লাস রেন্ডার করা
+            classes = [...initialClasses];
+            students = [...initialStudents];
+            updateCounters();
+            renderClasses();
+        }
 
         // গোপন এডমিন প্যানেল কন্ট্রোল মেথডস
         window.handleHeaderTap = function() {
@@ -1406,8 +1464,14 @@
                 callerName = "নামহীন কলকারী";
             }
 
-            if (isOfflineMode) {
-                showToast("অফলাইন মোড: লাইভ কলিং ডাটাবেজে ট্র্যাক হয়নি তবে কল করা হয়েছে।", "info");
+            if (isOfflineMode || !isFirebaseConnected) {
+                showToast("লোকাল মোড: কল করা হয়েছে।", "info");
+                const studentIdx = students.findIndex(s => s.id === studentId);
+                if (studentIdx > -1 && students[studentIdx].status === "সব") {
+                    students[studentIdx].status = "কল করা হয়েছে";
+                    saveOfflineData();
+                    renderStudentTable();
+                }
                 return;
             }
 
@@ -1562,13 +1626,13 @@
                     const index = students.findIndex(s => s.id === studentId);
                     if (index !== -1) {
                         students.splice(index, 1);
-                        if (!isOfflineMode) {
+                        if (!isOfflineMode && isFirebaseConnected) {
                             deletePromises.push(deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', studentId)));
                         }
                     }
                 });
 
-                if (isOfflineMode) {
+                if (isOfflineMode || !isFirebaseConnected) {
                     saveOfflineData();
                 } else {
                     await Promise.all(deletePromises);
@@ -1809,7 +1873,7 @@
                 const idx = students.findIndex(s => s.id === targetStudentId);
                 if (idx !== -1) {
                     students[idx].due = (Number(students[idx].due) || 0) + addedDue;
-                    if (!isOfflineMode) {
+                    if (!isOfflineMode && isFirebaseConnected) {
                         savePromises.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', students[idx].id), students[idx]));
                     }
                 }
@@ -1817,14 +1881,14 @@
                 students.forEach(s => {
                     if (s.classId === currentOpenClassId) {
                         s.due = (Number(s.due) || 0) + addedDue;
-                        if (!isOfflineMode) {
+                        if (!isOfflineMode && isFirebaseConnected) {
                             savePromises.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', s.id), s));
                         }
                     }
                 });
             }
 
-            if (isOfflineMode) {
+            if (isOfflineMode || !isFirebaseConnected) {
                 saveOfflineData();
             } else if (savePromises.length > 0) {
                 await Promise.all(savePromises);
@@ -1895,7 +1959,7 @@
                 const newStudent = { roll: Number(roll) || 0, id, name, father, phone, due: Number(due) || 0, classId, status: "সব" };
                 students.push(newStudent);
 
-                if (isOfflineMode) {
+                if (isOfflineMode || !isFirebaseConnected) {
                     saveOfflineData();
                 } else {
                     savePromises.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', newStudent.id), newStudent));
@@ -1923,16 +1987,16 @@
                                 status: "সব"
                             };
                             students.push(newStudent);
-                            if (!isOfflineMode) {
+                            if (!isOfflineMode && isFirebaseConnected) {
                                 savePromises.push(setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'students', newStudent.id), newStudent));
                             }
                         }
                     }
                 });
-                if (isOfflineMode) saveOfflineData();
+                if (isOfflineMode || !isFirebaseConnected) saveOfflineData();
             }
 
-            if (!isOfflineMode && savePromises.length > 0) {
+            if (!isOfflineMode && isFirebaseConnected && savePromises.length > 0) {
                 await Promise.all(savePromises);
             }
 
