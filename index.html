@@ -725,10 +725,15 @@
                 populateAdminClassSelects();
             });
 
-            rtdb.ref('students').on('value', snapshot => {
+rtdb.ref('students').on('value', snapshot => {
                 const data = snapshot.val();
                 students = data ? Object.values(data) : [];
+                
                 updateCounters();
+                
+                // সাইডবারে শিক্ষার্থীর সংখ্যা আপডেট করার জন্য এই লাইনটি এখানে যুক্ত করুন
+                renderClasses(); 
+                
                 if (!document.getElementById('class-students-modal').classList.contains('hidden')) {
                     renderCentralStudents();
                 }
