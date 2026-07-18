@@ -486,6 +486,24 @@
                             </button>
                         </div>
                     </div>
+                    
+                    <hr class="my-4">
+                    <!-- New Class Deletion Block -->
+                    <div class="border p-4 rounded-lg bg-red-50">
+                        <h4 class="font-bold text-red-800 text-sm mb-3">শ্রেণী (জামাত) মুছে ফেলুন</h4>
+                        <div class="flex gap-2 mb-4">
+                            <select id="del-class-select" class="border p-2 rounded w-full text-sm">
+                                <!-- অপশনগুলো জাভাস্ক্রিপ্ট থেকে আসবে -->
+                            </select>
+                            <button onclick="deleteSingleClass()" class="bg-red-700 hover:bg-red-800 text-white px-4 rounded text-sm font-semibold whitespace-nowrap transition duration-150">শ্রেণী মুছুন</button>
+                        </div>
+                        <div class="border-t pt-4 mt-2">
+                            <button onclick="deleteAllClasses()" class="bg-red-800 hover:bg-red-900 text-white w-full py-2.5 rounded text-sm font-bold shadow-md transition duration-200">
+                                <i class="fas fa-trash-alt mr-1"></i> একসাথে সমস্ত শ্রেণী ডিলিট করুন
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -1084,9 +1102,12 @@
         }
         
         function populateAdminClassSelects() {
-            ['admin-student-class-select', 'direct-stud-class'].forEach(id => {
-                const select = document.getElementById(id); select.innerHTML = "";
-                classes.forEach(c => select.innerHTML += `<option value="${c}">${c}</option>`);
+            ['admin-student-class-select', 'direct-stud-class', 'del-class-select'].forEach(id => {
+                const select = document.getElementById(id); 
+                if (select) {
+                    select.innerHTML = "";
+                    classes.forEach(c => select.innerHTML += `<option value="${c}">${c}</option>`);
+                }
             });
         }
 
@@ -1245,6 +1266,32 @@
             });
         }
 
+        function deleteSingleClass() {
+            const cls = document.getElementById('del-class-select').value;
+            if (!cls) return showCustomAlert("কোনো শ্রেণী নির্বাচন করা হয়নি!", "warning");
+            
+            showCustomConfirm(`আপনি কি নিশ্চিতভাবে "${cls}" শ্রেণীটি মুছে ফেলতে চান?`, function() {
+                const index = classes.indexOf(cls);
+                if (index > -1) {
+                    classes.splice(index, 1);
+                    syncDataToFirebase();
+                    showCustomAlert(`"${cls}" শ্রেণীটি মুছে ফেলা হয়েছে।`, "success");
+                    populateAdminClassSelects(); 
+                }
+            });
+        }
+
+        function deleteAllClasses() {
+            if(classes.length === 0) return showCustomAlert("কোনো শ্রেণী موجود নেই!", "warning");
+            
+            showCustomConfirm("⚠️ আপনি কি নিশ্চিত যে সমস্ত শ্রেণী (জামাত) মুছে ফেলতে চান?", function() {
+                classes = [];
+                syncDataToFirebase();
+                showCustomAlert("সমস্ত শ্রেণী সফলভাবে মুছে ফেলা হয়েছে!", "success");
+                populateAdminClassSelects();
+            });
+        }
+
         function toggleActionMenu(id) { document.getElementById('action-' + id).classList.toggle('hidden'); }
 
         let selectedLogUserForHistory = null;
@@ -1359,7 +1406,7 @@
                 return showCustomAlert("ভুল বর্তমান পাসওয়ার্ড!", "error");
             }
             if (newPass === "") {
-                return showCustomAlert("নতুন পাসওয়ার্ড খালি হতে পারবে না!", "warning");
+                return showCustomAlert("নতুন পাসওয়ার্ড খালি হতে পারবে মৃ না!", "warning");
             }
 
             rtdb.ref('adminSettings').update({ password: newPass })
@@ -1601,7 +1648,7 @@
             confirmModal.classList.remove('hidden');
             
             const yesBtn = document.getElementById('custom-confirm-yes-btn');
-            // FIX: Run callback first, then close modal to ensure it doesn't get cleared before executing
+            
             yesBtn.onclick = function() {
                 if (confirmCallbackFn) confirmCallbackFn();
                 closeCustomConfirm();
