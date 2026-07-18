@@ -146,17 +146,21 @@
     <main class="container mx-auto px-4 mt-6 flex-grow">
 
         <!-- ৩. সরাসরি ড্যাশবোর্ড সার্চ বক্স -->
-        <section class="theme-card p-4 rounded-xl shadow-md border-b-4 theme-border mb-6" id="theme-search-border">
-            <div class="w-full">
-                <label class="block text-sm font-semibold mb-1"> আইডি বা নাম দিয়ে সার্চ করুন:</label>
-                <div class="relative flex items-center">
-                    <span class="absolute left-3 text-gray-400"><i class="fas fa-search"></i></span>
-                    <input type="text" id="main-search-input" onkeyup="handleMainSearch()" class="w-full border-2 border-gray-300 rounded-lg p-2.5 pl-10 pr-20 focus:outline-none focus:border-emerald-600 text-black font-semibold" placeholder="এখানে টাইপ করুন...">
-                    <button id="clear-search-btn" onclick="clearMainSearch()" class="absolute right-3 hidden bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold px-2.5 py-1.5 rounded-md">
-                        ক্লিয়ার
-                    </button>
-                </div>
-            </div>
+<section class="theme-card p-4 rounded-xl shadow-md border-b-4 theme-border mb-6" id="theme-search-border">
+    <div class="w-full">
+        <!-- for="main-search-input" যুক্ত করা হয়েছে -->
+        <label for="main-search-input" class="block text-sm font-semibold mb-1"> আইডি বা নাম দিয়ে সার্চ করুন:</label>
+        <div class="relative flex items-center">
+            <span class="absolute left-3 text-gray-400"><i class="fas fa-search"></i></span>
+            
+            <input type="text" id="main-search-input" onkeyup="handleMainSearch()" class="w-full border-2 border-gray-300 rounded-lg p-2.5 pl-10 pr-20 focus:outline-none focus:border-emerald-600 text-black font-semibold" placeholder="এখানে টাইপ করুন...">
+            
+            <button id="clear-search-btn" onclick="clearMainSearch()" class="absolute right-3 hidden bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold px-2.5 py-1.5 rounded-md">
+                ক্লিয়ার
+            </button>
+        </div>
+    </div>
+</section>
         </section>
 
         <!-- ড্যাশবোর্ড সার্চের লাইভ রেজাল্ট দেখার স্থান -->
@@ -222,6 +226,7 @@
                 <div id="count-comment" class="text-xl font-bold mt-1 text-white">০</div>
             </button>
         </section>
+
     </main>
 
     <!-- ৫. সাইডবার (শ্রেণী তালিকা) -->
@@ -234,6 +239,7 @@
             <div class="p-4 overflow-y-auto h-[calc(100vh-140px)]" id="sidebar-classes-list"></div>
         </div>
         <div class="p-4 border-t border-gray-800 bg-slate-950 text-center">
+            <!-- গিটহাব লিংক রিমুভ করে টেক্সট করে দেওয়া হলো -->
             <div class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 text-yellow-400 py-2.5 px-4 rounded-lg text-xs font-bold shadow-md cursor-default select-none">
                 <i class="fab fa-github text-sm"></i> গিটহাব সোর্স কোড (GitHub)
             </div>
@@ -268,11 +274,13 @@
                 <table class="min-w-full text-sm text-left table-fixed md:table-auto">
                     <thead class="text-xs uppercase theme-header" id="theme-thead-modal">
                         <tr>
+                            <!-- প্রস্থ বাড়ানো হলো যাতে লেখা কেটে না যায় -->
                             <th class="px-4 py-3 w-12 min-w-[50px]">ক্র:</th>
                             <th class="px-4 py-3 w-20 min-w-[80px]">আইডি</th>
                             <th class="px-4 py-3 min-w-[220px]">শিক্ষার্থী ও পিতার নাম</th>
                             <th class="px-4 py-3 min-w-[160px]">ঠিকানা</th>
                             <th class="px-4 py-3 w-24 min-w-[100px]">বকেয়া</th>
+                            <!-- যোগাযোগ স্ট্যাটাস ঘর লম্বা করা হলো -->
                             <th class="px-4 py-3 min-w-[240px]">যোগাযোগ স্ট্যাটাস</th>
                             <th class="px-4 py-3 text-center w-20 min-w-[80px]">কল</th>
                             <th class="px-4 py-3 text-center w-16 min-w-[120px]">অ্যাকশন</th>
@@ -290,49 +298,18 @@
         </div>
     </div>
 
-    <!-- সম্পূর্ণ এডিট মডাল -->
-    <div id="full-edit-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-[80] px-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 text-black">
-            <div class="flex justify-between items-center border-b pb-3 mb-4">
-                <h3 class="text-lg font-bold text-emerald-800"><i class="fas fa-user-edit mr-2"></i> শিক্ষার্থী তথ্য এডিট</h3>
-                <button onclick="closeFullEditModal()" class="text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600">আইডি (পরিবর্তনযোগ্য নয়):</label>
-                    <input type="text" id="edit-stud-id" class="border p-2 rounded w-full bg-gray-100 text-gray-500 text-sm cursor-not-allowed" readonly>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold">জামাত পরিবর্তন:</label>
-                    <select id="edit-stud-class" class="border p-2 rounded-lg w-full text-sm"></select>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="edit-stud-name" placeholder="নাম" class="border p-2 rounded text-sm">
-                    <input type="text" id="edit-stud-father" placeholder="পিতার নাম" class="border p-2 rounded text-sm">
-                    <input type="text" id="edit-stud-address" placeholder="ঠিকানা" class="border p-2 rounded text-sm col-span-2">
-                    <input type="text" id="edit-stud-phone" placeholder="মোবাইল নাম্বার" class="border p-2 rounded text-sm col-span-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold">বর্তমান বকেয়া:</label>
-                    <input type="number" id="edit-stud-due" placeholder="বকেয়া টাকা" class="border p-2 rounded w-full text-sm font-bold text-red-600">
-                </div>
-                <div class="flex gap-2 mt-4">
-                    <button onclick="saveFullEditStudent()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg font-bold text-sm shadow">সেভ করুন</button>
-                    <button onclick="closeFullEditModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg font-bold text-sm shadow">বাতিল</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ৭. উন্নত মাঝখানে কল পপ-আপ উইন্ডো -->
     <div id="call-popup-backdrop" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm hidden flex items-center justify-center z-[70] p-4">
         <div id="call-popup" class="bg-gray-900 text-white rounded-2xl shadow-2xl p-6 w-full max-w-md border-2 border-yellow-400 relative">
             <button onclick="closeCallPopup()" class="absolute top-4 right-4 text-2xl text-gray-300 hover:text-white">&times;</button>
+            
             <div class="text-center">
                 <span class="text-xs bg-red-600 px-3 py-1 rounded-full animate-pulse font-semibold inline-block mb-4">চলমান কল...</span>
+                
                 <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl text-yellow-300 border-2 border-yellow-400 shadow-lg">
                     <i class="fas fa-phone-volume animate-bounce"></i>
                 </div>
+                
                 <div class="bg-gray-800 bg-opacity-75 p-4 rounded-xl mb-4 text-left border border-gray-700 space-y-2.5">
                     <div>
                         <span class="text-[11px] text-yellow-300 block font-semibold">শিক্ষার্থীর নাম</span>
@@ -359,15 +336,18 @@
                         </div>
                     </div>
                 </div>
+
                 <button onclick="confirmCallConnected()" class="w-full bg-green-600 hover:bg-green-700 text-white text-base py-3 rounded-lg font-bold mb-4 shadow-md transition duration-150">
                     <i class="fas fa-check mr-2"></i> কল সফল (কথা হয়েছে)
                 </button>
+                
                 <div class="grid grid-cols-2 gap-2 text-xs mb-3">
                     <button onclick="setCallPopupStatus('off')" class="bg-red-700 hover:bg-red-800 text-white py-2.5 rounded-lg font-semibold shadow">ফোন বন্ধ</button>
                     <button onclick="setCallPopupStatus('no-answer')" class="bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-lg font-semibold shadow">ফোন ধরেনি</button>
                     <button onclick="setCallPopupStatus('busy')" class="bg-purple-700 hover:bg-purple-800 text-white py-2.5 rounded-lg font-semibold shadow">ব্যস্ত</button>
                     <button onclick="setCallPopupStatus('left')" class="bg-pink-700 hover:bg-pink-800 text-white py-2.5 rounded-lg font-semibold shadow">মাদ্রাসায় নাই</button>
                 </div>
+                
                 <button onclick="triggerCallPopupComment()" class="w-full bg-cyan-700 hover:bg-cyan-800 text-white text-sm py-2 rounded-lg font-semibold shadow">
                     <i class="fas fa-comment-dots mr-2"></i> মন্তব্য লিখুন...
                 </button>
@@ -375,7 +355,7 @@
         </div>
     </div>
 
-    <!-- ৮. শুধুমাত্র ইউজার/শিক্ষার্থী অ্যাড ফরম (সাধারণ প্যানেল) -->
+    <!-- ৮. শুধুমাত্র ইউজার/শিক্ষার্থী অ্যাড ফরম -->
     <div id="direct-student-add-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-[55] px-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 text-black">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
@@ -403,16 +383,9 @@
     <!-- ৯. সিক্রেট অ্যাডমিন প্যানেল উইন্ডো -->
     <div id="admin-panel" class="fixed inset-0 bg-gray-900 bg-opacity-95 hidden z-50 overflow-y-auto p-4">
         <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl my-8 p-6 text-black">
-            <div class="flex flex-col md:flex-row justify-between items-center border-b pb-4 mb-6 gap-4">
-                <h2 class="text-2xl font-bold text-emerald-800" id="theme-admin-title"><i class="fas fa-user-shield mr-2"></i> অ্যাডমিন সেটিংস</h2>
-                <div class="flex gap-2 w-full md:w-auto">
-                    <button onclick="logoutAdmin()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2.5 rounded-lg font-bold shadow-md flex-1 md:flex-none flex items-center justify-center gap-1.5 transition">
-                        <i class="fas fa-sign-out-alt"></i> লগ আউট
-                    </button>
-                    <button onclick="closeAdminPanel()" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2.5 rounded-lg font-bold shadow-md flex-1 md:flex-none flex items-center justify-center gap-1.5 transition">
-                        <i class="fas fa-times"></i> বন্ধ করুন
-                    </button>
-                </div>
+            <div class="flex justify-between items-center border-b pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-800" id="theme-admin-title"><i class="fas fa-user-shield mr-2"></i> অ্যাডমিন সেটিংস কন্ট্রোল</h2>
+                <button onclick="closeAdminPanel()" class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold shadow-md">বন্ধ করুন</button>
             </div>
 
             <!-- ট্যাব নেভিগেশন -->
@@ -445,26 +418,50 @@
                 </div>
             </div>
 
-            <!-- Tab: শিক্ষার্থী এড (একক বাদ দেওয়া হয়েছে, শুধু বাল্ক) -->
+            <!-- Tab: শিক্ষার্থী এড -->
             <div id="tab-student" class="admin-tab-content hidden">
-                <h3 class="font-bold text-lg mb-3 text-emerald-800">নতুন শিক্ষার্থী এড করুন (সকল শিক্ষার্থী একসাথে)</h3>
+                <h3 class="font-bold text-lg mb-3 text-emerald-800">নতুন শিক্ষার্থী এড করুন</h3>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold">জামাত নির্বাচন করুন:</label>
+                    <select id="admin-student-class-select" class="border p-2 rounded-lg w-full mt-1"></select>
+                </div>
                 <div class="space-y-4">
                     <div class="border p-3 rounded-lg bg-gray-50">
-                        <p class="font-semibold text-sm mb-2 text-red-700">ফর্মেট: আইডি, নাম, পিতার নাম, ঠিকানা, মোবাইল, ক্লাস</p>
-                        <textarea id="bulk-student-textarea" class="border p-2 rounded w-full h-40 text-sm" placeholder="101, আব্দুল্লাহ, আবদুর রহমান, ঢাকা, 01700000000, ১ম শ্রেণী&#10;102, উমর, আবু বকর, সিলেট, 01800000000, ২য় শ্রেণী"></textarea>
-                        <button onclick="addBulkStudents()" class="bg-emerald-800 hover:bg-emerald-900 transition text-white w-full py-2.5 rounded mt-2 font-bold shadow">একসাথে সমস্ত শিক্ষার্থী এড করুন</button>
+                        <p class="font-semibold text-sm mb-2 text-emerald-800">একক শিক্ষার্থী যোগ:</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="stud-id" placeholder="আইডি" class="border p-2 rounded text-sm">
+                            <input type="text" id="stud-name" placeholder="নাম" class="border p-2 rounded text-sm">
+                            <input type="text" id="stud-father" placeholder="পিতার নাম" class="border p-2 rounded text-sm">
+                            <input type="text" id="stud-address" placeholder="ঠিকানা" class="border p-2 rounded text-sm">
+                            <input type="text" id="stud-phone" placeholder="মোবাইল নাম্বার" class="border p-2 rounded text-sm col-span-2">
+                            <input type="number" id="stud-due" placeholder="বকেয়া টাকা" class="border p-2 rounded col-span-2 text-sm">
+                        </div>
+                        <button onclick="addSingleStudent()" class="bg-emerald-600 text-white w-full py-2 rounded mt-3 font-semibold">এড করুন</button>
+                    </div>
+                    <hr>
+                    <div class="border p-3 rounded-lg bg-gray-50">
+                        <p class="font-semibold text-sm mb-2 text-red-700">সকল শিক্ষার্থী যোগ:</p>
+                        <textarea id="bulk-student-textarea" class="border p-2 rounded w-full h-32 text-xs" placeholder="101, আব্দুল্লাহ, আবদুর রহমান, ঢাকা, 01700000000, 500, ১ম শ্রেণী"></textarea>
+                        <button onclick="addBulkStudents()" class="bg-emerald-800 text-white w-full py-2 rounded mt-2 font-semibold">একসাথে সমস্ত ক্লাসে এড করুন</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab: বকেয়া এড (সার্চ অপশন বাদ দেওয়া হয়েছে) -->
+            <!-- Tab: বকেয়া এড -->
             <div id="tab-due" class="admin-tab-content hidden">
-                <h3 class="font-bold text-lg mb-3 text-emerald-800">বাল্ক বকেয়া টাকা যোগ করুন</h3>
+                <h3 class="font-bold text-lg mb-3 text-emerald-800">বকেয়া টাকা যোগ করুন</h3>
                 <div class="space-y-4">
                     <div class="border p-3 rounded-lg bg-gray-50">
-                        <p class="font-semibold text-sm mb-2 text-gray-700">ফর্মেট: আইডি, বকেয়া পরিমাণ</p>
-                        <textarea id="bulk-due-input" class="border p-2 rounded w-full h-40 text-sm" placeholder="101,500&#10;102,1200&#10;103,0"></textarea>
-                        <button onclick="addBulkDues()" class="bg-emerald-800 hover:bg-emerald-900 transition text-white w-full py-2.5 rounded mt-2 font-bold shadow">একসাথে সবার বকেয়া আপডেট করুন</button>
+                        <div class="flex gap-2 mb-2">
+                            <input type="text" id="due-search-query" class="border p-2 rounded w-full text-sm" placeholder="আইডি বা মোবাইল দিয়ে খুঁজুন...">
+                            <button onclick="searchStudentForDue()" class="bg-emerald-600 text-white px-4 rounded text-sm font-semibold">খুঁজুন</button>
+                        </div>
+                        <div id="due-search-result" class="hidden border p-2 bg-white rounded space-y-2 mb-2"></div>
+                    </div>
+                    <hr>
+                    <div class="border p-3 rounded-lg bg-gray-50">
+                        <textarea id="bulk-due-input" class="border p-2 rounded w-full h-24" placeholder="101,500&#10;102,1200"></textarea>
+                        <button onclick="addBulkDues()" class="bg-emerald-800 text-white w-full py-2 rounded mt-2 font-semibold">বকেয়া আপডেট করুন</button>
                     </div>
                 </div>
             </div>
@@ -510,6 +507,7 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -544,6 +542,7 @@
                 <h3 class="font-bold text-lg mb-4 text-emerald-800"><i class="fas fa-sliders-h mr-2"></i> সেটিংস ও কাস্টমাইজেশন</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- অপশন ১: পাসওয়ার্ড পরিবর্তন -->
                     <div class="border p-4 rounded-xl bg-gray-50 shadow-sm space-y-3 flex flex-col justify-between">
                         <div>
                             <h4 class="font-bold text-emerald-800 border-b pb-1.5 text-sm"><i class="fas fa-key mr-1"></i> এডমিন পাসওয়ার্ড</h4>
@@ -559,6 +558,7 @@
                         <button onclick="changeAdminPassword()" class="w-full bg-emerald-600 text-white text-xs py-2 rounded font-semibold shadow hover:bg-emerald-700 transition mt-2">পাসওয়ার্ড আপডেট করুন</button>
                     </div>
 
+                    <!-- অপশন ২: থিম পরিবর্তন -->
                     <div class="border p-4 rounded-xl bg-gray-50 shadow-sm space-y-3">
                         <h4 class="font-bold text-emerald-800 border-b pb-1.5 text-sm"><i class="fas fa-palette mr-1"></i> থিম কাস্টমাইজেশন (৬টি)</h4>
                         <div class="grid grid-cols-1 gap-1 h-64 overflow-y-auto pr-1">
@@ -583,6 +583,7 @@
                         </div>
                     </div>
 
+                    <!-- অপশন ৩: ফন্ট পরিবর্তন -->
                     <div class="border p-4 rounded-xl bg-gray-50 shadow-sm space-y-3">
                         <h4 class="font-bold text-emerald-800 border-b pb-1.5 text-sm"><i class="fas fa-font mr-1"></i> বাংলা ফন্ট সেটিংস</h4>
                         <div class="grid grid-cols-1 gap-1.5 h-64 overflow-y-auto pr-1">
@@ -603,6 +604,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -662,6 +664,7 @@
     </footer>
 
     <script>
+        // --- ফায়ারবেস কনফিগারেশন সেটআপ ---
         const firebaseConfig = {
             apiKey: "AIzaSyBukP6WmVJ7CfcRN9123lJfyoLQ7gtWngg",
             authDomain: "madani-contact.firebaseapp.com",
@@ -673,10 +676,12 @@
             measurementId: "G-0XK5V6WDV7"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const rtdb = firebase.database(); 
         const store = firebase.firestore();
 
+        // অফলাইন সাপোর্ট সক্রিয়করণ
         try {
             firebase.database().goOnline();
         } catch (err) {
@@ -695,7 +700,7 @@
         let currentPage = 1;
         const itemsPerPage = 50;
 
-        let isAdminAuthenticatedThisSession = false; // সেশন ভ্যারিয়েবল যুক্ত করা হয়েছে
+        let isAdminAuthenticatedThisSession = false;
         let adminPassword = "9522";
 
         window.onload = function() {
@@ -704,10 +709,16 @@
             setupAndroidBackDetector();
             loadCachedUser();
             
+            // রুলস বাইপাস করতে ব্যাকগ্রাউন্ডে বেনামি অথেনটিকেশন সচল করা হচ্ছে
             firebase.auth().signInAnonymously()
-                .then(() => console.log("Logged in anonymously."))
-                .catch(err => console.warn("Auth init error: ", err.message));
+                .then(() => {
+                    console.log("Logged in anonymously to secure database rules authorization.");
+                })
+                .catch(err => {
+                    console.warn("Auth initialization returned: ", err.message);
+                });
 
+            // ফায়ারবেস থেকে লাইভ ডাটা লোড
             rtdb.ref('classes').on('value', snapshot => {
                 classes = snapshot.val() || ["নূরানী ১ম", "নূরানী ২য়", "হিফজ"];
                 renderClasses();
@@ -718,7 +729,6 @@
                 const data = snapshot.val();
                 students = data ? Object.values(data) : [];
                 updateCounters();
-                renderClasses(); // শিক্ষার্থী আপডেট হলে সাইডবার কাউন্ট আপডেট করার জন্য কল করা হল
                 if (!document.getElementById('class-students-modal').classList.contains('hidden')) {
                     renderCentralStudents();
                 }
@@ -735,6 +745,7 @@
                 }
             });
 
+            // সেটিংস ডাটা রিয়েলটাইমে সিঙ্ক করুন (পাসওয়ার্ড, থিম, ফন্ট)
             rtdb.ref('adminSettings').on('value', snapshot => {
                 const settings = snapshot.val();
                 if (settings) {
@@ -756,12 +767,18 @@
 
         function checkOnlineStatus() {
             const statusDot = document.getElementById('online-status');
-            window.addEventListener('online', () => statusDot.className = "inline-block w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse");
-            window.addEventListener('offline', () => statusDot.className = "inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse");
+            window.addEventListener('online', () => {
+                statusDot.className = "inline-block w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
+            });
+            window.addEventListener('offline', () => {
+                statusDot.className = "inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse";
+            });
         }
 
         function syncDataToFirebase() {
-            rtdb.ref('classes').set(classes).catch(err => showCustomAlert("ক্লাস সিঙ্ক করা যায়নি: " + err.message, "error"));
+            rtdb.ref('classes').set(classes).catch(err => {
+                showCustomAlert("ডাটাবেজে ক্লাস সিঙ্ক করা যায়নি: " + err.message, "error");
+            });
         }
 
         function loginUser() {
@@ -770,14 +787,20 @@
             currentUser = name;
             
             localStorage.setItem('logged_madrasha_user', currentUser);
+
             document.getElementById('current-user-display').innerText = "👤 " + currentUser;
             document.getElementById('login-screen').classList.add('hidden');
             
             rtdb.ref('usersLog/' + currentUser).once('value', snapshot => {
                 if (!snapshot.exists()) {
-                    rtdb.ref('usersLog/' + currentUser).set({ loginTime: new Date().toLocaleString(), calls: [] });
+                    rtdb.ref('usersLog/' + currentUser).set({
+                        loginTime: new Date().toLocaleString(),
+                        calls: []
+                    }).catch(err => console.error("Could not set login trace: ", err.message));
                 } else {
-                    rtdb.ref('usersLog/' + currentUser).update({ loginTime: new Date().toLocaleString() });
+                    rtdb.ref('usersLog/' + currentUser).update({
+                        loginTime: new Date().toLocaleString()
+                    }).catch(err => console.error("Could not update login trace: ", err.message));
                 }
             });
         }
@@ -791,10 +814,12 @@
         function setupAndroidBackDetector() {
             window.history.pushState({page: 1}, "", "");
             window.onpopstate = function() {
+                const searchInput = document.getElementById('class-search-input');
                 const modal = document.getElementById('class-students-modal');
                 if (!modal.classList.contains('hidden')) {
-                    if (document.getElementById('class-search-input').value !== "") {
-                        clearClassSearch(); window.history.pushState({page: 1}, "", ""); 
+                    if (searchInput.value !== "") {
+                        clearClassSearch();
+                        window.history.pushState({page: 1}, "", ""); 
                     } else closeClassStudentsModal();
                 }
             };
@@ -809,52 +834,66 @@
             
             callButtons.forEach(btn => {
                 if (currentScrollLeft >= maxScrollLeft - 15 || maxScrollLeft <= 0) {
-                    btn.classList.remove('call-btn-floating'); btn.classList.add('call-btn-solid');
+                    btn.classList.remove('call-btn-floating');
+                    btn.classList.add('call-btn-solid');
                 } else {
-                    btn.classList.remove('call-btn-solid'); btn.classList.add('call-btn-floating');
+                    btn.classList.remove('call-btn-solid');
+                    btn.classList.add('call-btn-floating');
                 }
             });
         }
 
-        function handleMainSearch() {
-            if (!currentUser) return;
-            const val = document.getElementById('main-search-input').value.trim().toLowerCase();
-            const clearBtn = document.getElementById('clear-search-btn');
-            const resultSection = document.getElementById('dashboard-search-results-section');
-            const resultBody = document.getElementById('dashboard-search-results-body');
+function handleMainSearch() {
+    if (!currentUser) return; // ইউজার লগইন করা না থাকলে সার্চ কাজ করবে না
 
-            if (val === "") {
-                clearBtn.classList.add('hidden'); resultSection.classList.add('hidden'); return;
-            }
-            clearBtn.classList.remove('hidden');
+    const val = document.getElementById('main-search-input').value.trim().toLowerCase();
+    const clearBtn = document.getElementById('clear-search-btn');
+    const resultSection = document.getElementById('dashboard-search-results-section');
+    const resultBody = document.getElementById('dashboard-search-results-body');
 
-            const filtered = students.filter(s => s.id.toLowerCase().includes(val) || s.name.toLowerCase().includes(val));
-            resultBody.innerHTML = "";
-            if (filtered.length === 0) {
-                resultBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">কোন ফলাফল পাওয়া যায়নি।</td></tr>`;
-            } else {
-                filtered.forEach((stud, index) => {
-                    const tr = document.createElement('tr');
-                    tr.className = `border-b ${getStatusClass(stud.status)} text-white relative`;
-                    tr.innerHTML = `
-                        <td class="px-4 py-3 font-semibold">${index + 1}</td>
-                        <td class="px-4 py-3 font-mono">${stud.id}</td>
-                        <td class="px-4 py-3">
-                            <div class="font-bold text-white">${stud.name}</div>
-                            <div class="text-[11px] opacity-80">পিতা: ${stud.fatherName} (${stud.class})</div>
-                        </td>
-                        <td class="px-4 py-3">${stud.address || '---'}</td>
-                        <td class="px-4 py-3 font-bold text-yellow-300">৳${stud.due}</td>
-                        <td class="px-4 py-3 text-center call-wrapper-td">
-                            <button onclick="triggerCall('${stud.id}')" class="call-dynamic-btn call-btn-floating"><i class="fas fa-phone text-xs"></i></button>
-                        </td>
-                    `;
-                    resultBody.appendChild(tr);
-                });
-            }
-            resultSection.classList.remove('hidden');
-            setTimeout(() => handleTableScroll('search-scroll-container'), 50);
-        }
+    if (val === "") {
+        clearBtn.classList.add('hidden');
+        resultSection.classList.add('hidden');
+        return;
+    }
+    clearBtn.classList.remove('hidden');
+
+    // উন্নত ও ত্রুটিমুক্ত ফিল্টারিং লজিক 
+    const filtered = students.filter(s => {
+        // null চেক এবং ডাটাকে string এ কনভার্ট করে সার্চ করা হচ্ছে
+        const safeId = s.id ? s.id.toString().toLowerCase() : "";
+        const safeName = s.name ? s.name.toString().toLowerCase() : "";
+        const safePhone = s.phone ? s.phone.toString().toLowerCase() : "";
+
+        return safeId.includes(val) || safeName.includes(val) || safePhone.includes(val);
+    });
+
+    resultBody.innerHTML = "";
+    if (filtered.length === 0) {
+        resultBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">কোন ফলাফল পাওয়া যায়নি।</td></tr>`;
+    } else {
+        filtered.forEach((stud, index) => {
+            const tr = document.createElement('tr');
+            tr.className = `border-b ${getStatusClass(stud.status)} text-white relative`;
+            tr.innerHTML = `
+                <td class="px-4 py-3 font-semibold">${index + 1}</td>
+                <td class="px-4 py-3 font-mono">${stud.id}</td>
+                <td class="px-4 py-3">
+                    <div class="font-bold text-white">${stud.name}</div>
+                    <div class="text-[11px] opacity-80">পিতা: ${stud.fatherName || '---'} (${stud.class})</div>
+                </td>
+                <td class="px-4 py-3">${stud.address || '---'}</td>
+                <td class="px-4 py-3 font-bold text-yellow-300">৳${stud.due || 0}</td>
+                <td class="px-4 py-3 text-center call-wrapper-td">
+                    <button onclick="triggerCall('${stud.id}')" class="call-dynamic-btn call-btn-floating"><i class="fas fa-phone text-xs"></i></button>
+                </td>
+            `;
+            resultBody.appendChild(tr);
+        });
+    }
+    resultSection.classList.remove('hidden');
+    setTimeout(() => handleTableScroll('search-scroll-container'), 50);
+}
 
         function clearMainSearch() {
             document.getElementById('main-search-input').value = "";
@@ -864,6 +903,7 @@
 
         function toggleSidebar(show) {
             if (!currentUser && show) return;
+
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             if (show) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
@@ -884,14 +924,23 @@
         }
 
         function updateCounters() {
-            document.getElementById('count-all').innerText = students.length;
-            document.getElementById('count-uncalled').innerText = students.filter(s => s.status === 'uncalled' || !s.status).length;
-            document.getElementById('count-called').innerText = students.filter(s => s.status === 'called').length;
-            document.getElementById('count-off').innerText = students.filter(s => s.status === 'off').length;
-            document.getElementById('count-no-answer').innerText = students.filter(s => s.status === 'no-answer').length;
-            document.getElementById('count-busy').innerText = students.filter(s => s.status === 'busy').length;
-            document.getElementById('count-left').innerText = students.filter(s => s.status === 'left').length;
-            document.getElementById('count-comment').innerText = students.filter(s => s.status === 'comment').length;
+            const countAll = students.length;
+            const countUncalled = students.filter(s => s.status === 'uncalled' || !s.status).length;
+            const countCalled = students.filter(s => s.status === 'called').length;
+            const countOff = students.filter(s => s.status === 'off').length;
+            const countNoAnswer = students.filter(s => s.status === 'no-answer').length;
+            const countBusy = students.filter(s => s.status === 'busy').length;
+            const countLeft = students.filter(s => s.status === 'left').length;
+            const countComment = students.filter(s => s.status === 'comment').length;
+
+            document.getElementById('count-all').innerText = countAll;
+            document.getElementById('count-uncalled').innerText = countUncalled;
+            document.getElementById('count-called').innerText = countCalled;
+            document.getElementById('count-off').innerText = countOff;
+            document.getElementById('count-no-answer').innerText = countNoAnswer;
+            document.getElementById('count-busy').innerText = countBusy;
+            document.getElementById('count-left').innerText = countLeft;
+            document.getElementById('count-comment').innerText = countComment;
         }
 
         function openClassStudentsModal(mode, filterValue) {
@@ -910,13 +959,25 @@
             document.getElementById('class-students-modal').classList.remove('hidden');
         }
 
-        function closeClassStudentsModal() { document.getElementById('class-students-modal').classList.add('hidden'); clearClassSearch(); }
-        function showCounterList(status) { if (!currentUser) return; if (status === 'all') openClassStudentsModal("all", ""); else openClassStudentsModal("counter", status); }
+        function closeClassStudentsModal() {
+            document.getElementById('class-students-modal').classList.add('hidden');
+            clearClassSearch();
+        }
+
+        function showCounterList(status) {
+            if (!currentUser) return;
+
+            if (status === 'all') openClassStudentsModal("all", "");
+            else openClassStudentsModal("counter", status);
+        }
 
         function updateStudentStatus(studentId, newStatus) {
             if (newStatus === 'comment') { openCommentDirectly(studentId); return; }
-            rtdb.ref('students/' + studentId).update({ status: newStatus, caller: currentUser, comment: "" }).catch(err => showCustomAlert("আপডেট করা যায়নি: " + err.message, "error"));
+            rtdb.ref('students/' + studentId).update({ status: newStatus, caller: currentUser, comment: "" }).catch(err => {
+                showCustomAlert("স্ট্যাটাস আপডেট করা যায়নি: " + err.message, "error");
+            });
             saveStatusLogs(studentId, newStatus);
+            
             const ddown = document.getElementById(`dropdown-${studentId}`);
             if (ddown) { ddown.value = newStatus; }
         }
@@ -932,10 +993,14 @@
         function saveComment() {
             const text = document.getElementById('comment-textarea').value.trim();
             if (text !== "") {
-                rtdb.ref('students/' + commentStudentId).update({ comment: text, status: 'comment', caller: currentUser });
+                rtdb.ref('students/' + commentStudentId).update({ comment: text, status: 'comment', caller: currentUser }).catch(err => {
+                    showCustomAlert("মন্তব্য সংরক্ষণ করা যায়নি: " + err.message, "error");
+                });
                 saveStatusLogs(commentStudentId, 'comment');
             } else {
-                rtdb.ref('students/' + commentStudentId).update({ comment: "", status: 'uncalled' });
+                rtdb.ref('students/' + commentStudentId).update({ comment: "", status: 'uncalled' }).catch(err => {
+                    showCustomAlert("মন্তব্য রিসেট করা যায়নি: " + err.message, "error");
+                });
                 saveStatusLogs(commentStudentId, 'uncalled');
             }
             closeCommentModal();
@@ -946,49 +1011,81 @@
         function saveStatusLogs(studentId, status) {
             const stud = students.find(s => s.id === studentId);
             if (currentUser && stud) {
-                const callData = { studentId: studentId, studentName: stud.name, status: status, time: new Date().toLocaleTimeString() };
+                const callData = {
+                    studentId: studentId,
+                    studentName: stud.name,
+                    status: status,
+                    time: new Date().toLocaleTimeString()
+                };
+                
                 rtdb.ref('usersLog/' + currentUser + '/calls').once('value', snapshot => {
-                    let calls = snapshot.val() || []; calls.push(callData);
-                    rtdb.ref('usersLog/' + currentUser + '/calls').set(calls);
+                    let calls = snapshot.val() || [];
+                    calls.push(callData);
+                    rtdb.ref('usersLog/' + currentUser + '/calls').set(calls).catch(err => {
+                        console.error("হিস্ট্রি লগ রাইট করা যায়নি: ", err.message);
+                    });
                 });
             }
         }
 
         let activeCallingStudentId = null;
         function triggerCall(studentId) {
-            const stud = students.find(s => s.id === studentId); if (!stud) return;
+            const stud = students.find(s => s.id === studentId);
+            if (!stud) return;
             activeCallingStudentId = studentId;
+            
             document.getElementById('call-popup-name').innerText = stud.name;
             document.getElementById('call-popup-father').innerText = stud.fatherName || '---';
             document.getElementById('call-popup-phone').innerText = stud.phone || '---';
             document.getElementById('call-popup-address').innerText = stud.address || '---';
             document.getElementById('call-popup-due').innerText = "৳" + (stud.due || 0);
+            
             document.getElementById('call-popup-backdrop').classList.remove('hidden');
             window.location.href = "tel:" + stud.phone;
         }
 
-        function confirmCallConnected() { if (activeCallingStudentId) { updateStudentStatus(activeCallingStudentId, 'called'); closeCallPopup(); } }
-        function setCallPopupStatus(status) { if (activeCallingStudentId) { updateStudentStatus(activeCallingStudentId, status); closeCallPopup(); } }
-        function triggerCallPopupComment() { if (activeCallingStudentId) { const sId = activeCallingStudentId; closeCallPopup(); openCommentDirectly(sId); } }
-        function closeCallPopup() { document.getElementById('call-popup-backdrop').classList.add('hidden'); activeCallingStudentId = null; }
-        function getStatusClass(status) { const classesMap = { uncalled:'status-uncalled', called:'status-called', off:'status-off', 'no-answer':'status-no-answer', busy:'status-busy', left:'status-left', comment:'status-comment' }; return classesMap[status] || ''; }
+        function confirmCallConnected() { 
+            if (activeCallingStudentId) { 
+                updateStudentStatus(activeCallingStudentId, 'called'); 
+                closeCallPopup(); 
+            } 
+        }
+        function setCallPopupStatus(status) { 
+            if (activeCallingStudentId) { 
+                updateStudentStatus(activeCallingStudentId, status); 
+                closeCallPopup(); 
+            } 
+        }
+        function triggerCallPopupComment() { 
+            if (activeCallingStudentId) { 
+                const sId = activeCallingStudentId; 
+                closeCallPopup(); 
+                openCommentDirectly(sId); 
+            } 
+        }
+        function closeCallPopup() { 
+            document.getElementById('call-popup-backdrop').classList.add('hidden'); 
+            activeCallingStudentId = null; 
+        }
+
+        function getStatusClass(status) {
+            const classesMap = { uncalled:'status-uncalled', called:'status-called', off:'status-off', 'no-answer':'status-no-answer', busy:'status-busy', left:'status-left', comment:'status-comment' };
+            return classesMap[status] || '';
+        }
 
         function setupHeaderTouch() {
             const titleElement = document.getElementById('madrasha-header');
             titleElement.addEventListener('click', () => {
                 const now = new Date().getTime();
-                if (now - lastTouchTime < 3000) headerTouchCount++;
-                else headerTouchCount = 1;
+                if (now - lastTouchTime < 3000) {
+                    headerTouchCount++;
+                } else {
+                    headerTouchCount = 1;
+                }
                 lastTouchTime = now;
-                
-                // পরপর ৪ বার ক্লিক করলে
-                if (headerTouchCount >= 4) {
+                if (headerTouchCount >= 5) {
                     headerTouchCount = 0;
-                    if (isAdminAuthenticatedThisSession) {
-                        openAdminPanel(); // সেশন থাকলে সরাসরি ওপেন
-                    } else {
-                        openPasswordModal(); // না থাকলে পাসওয়ার্ড চাইবে
-                    }
+                    openPasswordModal();
                 }
             });
         }
@@ -1007,20 +1104,18 @@
 
         function openAdminPanel() { document.getElementById('admin-panel').classList.remove('hidden'); showAdminTab('tab-class'); }
         function closeAdminPanel() { document.getElementById('admin-panel').classList.add('hidden'); }
-        function logoutAdmin() {
-            isAdminAuthenticatedThisSession = false;
-            closeAdminPanel();
-            showCustomAlert("অ্যাডমিন প্যানেল থেকে লগ আউট করা হয়েছে।", "success");
-        }
         
         function showAdminTab(tabId) {
             document.querySelectorAll('.admin-tab-content').forEach(tab => tab.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.className = "tab-btn bg-emerald-700 hover:bg-emerald-800 text-white py-2 px-3 rounded-lg font-semibold text-xs md:text-sm shadow");
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn bg-emerald-700 hover:bg-emerald-800 text-white py-2 px-3 rounded-lg font-semibold text-xs md:text-sm shadow";
+            });
         }
         
         function populateAdminClassSelects() {
-            ['direct-stud-class', 'del-class-select', 'edit-stud-class'].forEach(id => {
+            ['admin-student-class-select', 'direct-stud-class', 'del-class-select'].forEach(id => {
                 const select = document.getElementById(id); 
                 if (select) {
                     select.innerHTML = "";
@@ -1046,7 +1141,9 @@
             rtdb.ref('students/' + id).set({ id, name, fatherName: father, address, phone, due, class: cls, status: 'uncalled', comment: '', caller: '' }).then(() => {
                 showCustomAlert("সফলভাবে শিক্ষার্থী যুক্ত হয়েছে!", "success");
                 closeDirectStudentAdd();
-            }).catch(err => showCustomAlert("যুক্ত করা যায়নি: " + err.message, "error"));
+            }).catch(err => {
+                showCustomAlert("যুক্ত করা যায়নি: " + err.message, "error");
+            });
         }
 
         function addSingleClass() {
@@ -1059,26 +1156,69 @@
             syncDataToFirebase(); showCustomAlert("বাল্ক শ্রেণী যুক্ত হয়েছে!", "success");
         }
 
-        // সকল শিক্ষার্থী একসাথে অ্যাড (বকেয়া অপশন বাদ)
+        function addSingleStudent() {
+            const cls = document.getElementById('admin-student-class-select').value;
+            const id = document.getElementById('stud-id').value.trim();
+            const name = document.getElementById('stud-name').value.trim();
+            const father = document.getElementById('stud-father').value.trim();
+            const address = document.getElementById('stud-address').value.trim();
+            const phone = document.getElementById('stud-phone').value.trim();
+            const due = parseInt(document.getElementById('stud-due').value) || 0;
+            if (!id || !name || !phone) return showCustomAlert("প্রয়োজনীয় ফিল্ড পূরণ করুন!", "warning");
+            rtdb.ref('students/' + id).set({ id, name, fatherName: father, address, phone, due, class: cls, status: 'uncalled', comment: '', caller: '' }).then(() => {
+                showCustomAlert("যুক্ত হয়েছে!", "success");
+            }).catch(err => {
+                showCustomAlert("যুক্ত করা যায়নি: " + err.message, "error");
+            });
+        }
+
         function addBulkStudents() {
             const text = document.getElementById('bulk-student-textarea').value.trim();
             if (!text) return showCustomAlert("ডাটা দিন!", "warning");
             text.split("\n").forEach(line => {
                 const parts = line.split(",");
-                if (parts.length >= 6) { // বকেয়া বাদ দেওয়ায় 6 টি পার্ট
-                    const id = parts[0].trim(), name = parts[1].trim(), father = parts[2].trim(), address = parts[3].trim(), phone = parts[4].trim(), cls = parts[5].trim();
-                    const due = 0; // ডিফল্ট বকেয়া 0
+                if (parts.length >= 7) {
+                    const id = parts[0].trim(), name = parts[1].trim(), father = parts[2].trim(), address = parts[3].trim(), phone = parts[4].trim(), due = parseInt(parts[5].trim()) || 0, cls = parts[6].trim();
                     if (!classes.includes(cls)) { classes.push(cls); syncDataToFirebase(); }
-                    rtdb.ref('students/' + id).set({ id, name, fatherName: father, address, phone, due, class: cls, status: 'uncalled', comment: '', caller: '' });
+                    rtdb.ref('students/' + id).set({ id, name, fatherName: father, address, phone, due, class: cls, status: 'uncalled', comment: '', caller: '' }).catch(err => {
+                        console.error("বাল্ক সেটিং ফেলড: ", err.message);
+                    });
                 }
             });
             showCustomAlert("বাল্ক স্টুডেন্ট এড হয়েছে!", "success");
         }
 
+        let dueActiveSearchStud = null;
+        function searchStudentForDue() {
+            const query = document.getElementById('due-search-query').value.trim();
+            const stud = students.find(s => s.id === query || s.phone === query);
+            const box = document.getElementById('due-search-result');
+            if (stud) {
+                dueActiveSearchStud = stud;
+                box.innerHTML = `<p><b>${stud.name}</b> (${stud.class})</p><p>বর্তমান বকেয়া: ৳${stud.due}</p><div class="flex gap-2"><input type="number" id="new-due-val" class="border p-2 rounded w-full"><button onclick="updateDueSingleAction()" class="bg-emerald-700 text-white px-4 rounded font-semibold">সংরক্ষণ</button></div>`;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.remove('hidden');
+                box.innerHTML = `<p class="text-red-500">পাওয়া যায়নি!</p>`;
+            }
+        }
+        
+        function updateDueSingleAction() {
+            const val = parseInt(document.getElementById('new-due-val').value) || 0;
+            if (dueActiveSearchStud) { 
+                rtdb.ref('students/' + dueActiveSearchStud.id).update({ due: val }).then(() => {
+                    showCustomAlert("আপডেট হয়েছে!", "success"); 
+                    document.getElementById('due-search-result').classList.add('hidden'); 
+                }).catch(err => {
+                    showCustomAlert("বকেয়া আপডেট করা যায়নি: " + err.message, "error");
+                });
+            }
+        }
+
         function addBulkDues() {
             document.getElementById('bulk-due-input').value.trim().split("\n").forEach(line => {
                 const parts = line.split(",");
-                if (parts.length >= 2) { const id = parts[0].trim(), dueAmt = parseInt(parts[1].trim()) || 0; rtdb.ref('students/' + id).update({ due: dueAmt }); }
+                if (parts.length >= 2) { const id = parts[0].trim(), dueAmt = parseInt(parts[1].trim()) || 0; rtdb.ref('students/' + id).update({ due: dueAmt }).catch(err => console.error("বকেয়া বাল্ক ফেলড: ", err.message)); }
             });
             showCustomAlert("বাল্ক বকেয়া সম্পন্ন!", "success");
         }
@@ -1086,98 +1226,96 @@
         function editDuePrompt(id) {
             const stud = students.find(s => s.id === id); if (!stud) return;
             const amt = prompt(`নতুন বকেয়া দিন (${stud.name}):`, stud.due);
-            if (amt !== null) rtdb.ref('students/' + id).update({ due: parseInt(amt) || 0 }).catch(err => showCustomAlert("আপডেট করা যায়নি: " + err.message, "error"));
-        }
-
-        // সম্পূর্ণ এডিট মডাল সিস্টেম
-        let currentEditStudentId = null;
-        function openFullEditModal(id) {
-            const stud = students.find(s => s.id === id);
-            if (!stud) return;
-            currentEditStudentId = id;
-            
-            populateAdminClassSelects();
-            document.getElementById('edit-stud-id').value = stud.id;
-            document.getElementById('edit-stud-name').value = stud.name;
-            document.getElementById('edit-stud-father').value = stud.fatherName || '';
-            document.getElementById('edit-stud-address').value = stud.address || '';
-            document.getElementById('edit-stud-phone').value = stud.phone || '';
-            document.getElementById('edit-stud-due').value = stud.due || 0;
-            document.getElementById('edit-stud-class').value = stud.class;
-            
-            document.getElementById('full-edit-modal').classList.remove('hidden');
-        }
-
-        function closeFullEditModal() {
-            document.getElementById('full-edit-modal').classList.add('hidden');
-            currentEditStudentId = null;
-        }
-
-        function saveFullEditStudent() {
-            if (!currentEditStudentId) return;
-            
-            const name = document.getElementById('edit-stud-name').value.trim();
-            const father = document.getElementById('edit-stud-father').value.trim();
-            const address = document.getElementById('edit-stud-address').value.trim();
-            const phone = document.getElementById('edit-stud-phone').value.trim();
-            const due = parseInt(document.getElementById('edit-stud-due').value) || 0;
-            const cls = document.getElementById('edit-stud-class').value;
-
-            if (!name || !phone) return showCustomAlert("নাম এবং মোবাইল আবশ্যক!", "warning");
-
-            rtdb.ref('students/' + currentEditStudentId).update({
-                name: name,
-                fatherName: father,
-                address: address,
-                phone: phone,
-                due: due,
-                class: cls
-            }).then(() => {
-                showCustomAlert("শিক্ষার্থীর তথ্য সফলভাবে আপডেট হয়েছে!", "success");
-                closeFullEditModal();
-            }).catch(err => {
-                showCustomAlert("আপডেট করা যায়নি: " + err.message, "error");
+            if (amt !== null) rtdb.ref('students/' + id).update({ due: parseInt(amt) || 0 }).catch(err => {
+                showCustomAlert("বকেয়া আপডেট করা যায়নি: " + err.message, "error");
             });
         }
 
         function deleteSingleDue() {
             const query = document.getElementById('del-due-query').value.trim();
             const stud = students.find(s => s.id === query || s.phone === query);
-            if (stud) rtdb.ref('students/' + stud.id).update({ due: 0 }).then(() => showCustomAlert("বকেয়া মুছে ফেলা হয়েছে।", "success"));
+            if (stud) { 
+                rtdb.ref('students/' + stud.id).update({ due: 0 }).then(() => {
+                    showCustomAlert("বকেয়া মুছে ফেলা হয়েছে।", "success");
+                }).catch(err => {
+                    showCustomAlert("বকেয়া ডিলিট করা যায়নি: " + err.message, "error");
+                });
+            }
         }
+        
         function deleteAllDues() {
             showCustomConfirm("সবার বকেয়া শূন্য করতে চান?", function() {
-                students.forEach(s => rtdb.ref('students/' + s.id).update({ due: 0 })); 
+                students.forEach(s => rtdb.ref('students/' + s.id).update({ due: 0 }).catch(err => console.error("বকেয়া রিমুভ ফেলড: ", err.message))); 
                 showCustomAlert("সব বকেয়া মুছে ফেলা হয়েছে!", "success");
             });
         }
+        
         function deleteStudent() {
             const id = document.getElementById('del-student-query').value.trim();
-            showCustomConfirm("শিক্ষার্থী মুছে ফেলতে চান?", function() { rtdb.ref('students/' + id).remove().then(() => showCustomAlert("ডিলিট হয়েছে!", "success")); });
+            showCustomConfirm("আপনি কি নিশ্চিতভাবে এই শিক্ষার্থী মুছে ফেলতে চান?", function() {
+                rtdb.ref('students/' + id).remove().then(() => {
+                    showCustomAlert("ডিলিট হয়েছে!", "success");
+                }).catch(err => {
+                    showCustomAlert("শিক্ষার্থী ডিলিট করা যায়নি: " + err.message, "error");
+                });
+            });
         }
-        function deleteStudentDirect(id) { showCustomConfirm("ডিলিট করতে চান?", function() { rtdb.ref('students/' + id).remove(); }); }
-        function deleteAllStudents() { showCustomConfirm("⚠️ সমস্ত শিক্ষার্থীর ডাটা মুছে ফেলতে চান?", function() { rtdb.ref('students').remove().then(() => showCustomAlert("মুছে ফেলা হয়েছে!", "success")); }); }
+        
+        function deleteStudentDirect(id) { 
+            showCustomConfirm("ডিলিট করতে চান?", function() {
+                rtdb.ref('students/' + id).remove().catch(err => {
+                    showCustomAlert("ডিলিট করা যায়নি: " + err.message, "error");
+                });
+            });
+        }
+        
+        function deleteAllStudents() {
+            showCustomConfirm("⚠️ আপনি কি নিশ্চিত যে সমস্ত শিক্ষার্থীর ডাটা চিরতরে মুছে ফেলতে চান?", function() {
+                rtdb.ref('students').remove().then(() => {
+                    showCustomAlert("সফলভাবে সমস্ত শিক্ষার্থীর ডাটা মুছে ফেলা হয়েছে!", "success");
+                }).catch(err => {
+                    showCustomAlert("ডাটা মুছে ফেলা সম্ভব হয়নি: " + err.message, "error");
+                });
+            });
+        }
+
         function deleteSingleClass() {
             const cls = document.getElementById('del-class-select').value;
             if (!cls) return showCustomAlert("কোনো শ্রেণী নির্বাচন করা হয়নি!", "warning");
-            showCustomConfirm(`"${cls}" শ্রেণীটি মুছে ফেলতে চান?`, function() {
+            
+            showCustomConfirm(`আপনি কি নিশ্চিতভাবে "${cls}" শ্রেণীটি মুছে ফেলতে চান?`, function() {
                 const index = classes.indexOf(cls);
-                if (index > -1) { classes.splice(index, 1); syncDataToFirebase(); showCustomAlert(`"${cls}" মুছে ফেলা হয়েছে।`, "success"); populateAdminClassSelects(); }
+                if (index > -1) {
+                    classes.splice(index, 1);
+                    syncDataToFirebase();
+                    showCustomAlert(`"${cls}" শ্রেণীটি মুছে ফেলা হয়েছে।`, "success");
+                    populateAdminClassSelects(); 
+                }
             });
         }
+
         function deleteAllClasses() {
-            if(classes.length === 0) return showCustomAlert("কোনো শ্রেণী নেই!", "warning");
-            showCustomConfirm("⚠️ সমস্ত শ্রেণী মুছে ফেলতে চান?", function() { classes = []; syncDataToFirebase(); showCustomAlert("মুছে ফেলা হয়েছে!", "success"); populateAdminClassSelects(); });
+            if(classes.length === 0) return showCustomAlert("কোনো শ্রেণী موجود নেই!", "warning");
+            
+            showCustomConfirm("⚠️ আপনি কি নিশ্চিত যে সমস্ত শ্রেণী (জামাত) মুছে ফেলতে চান?", function() {
+                classes = [];
+                syncDataToFirebase();
+                showCustomAlert("সমস্ত শ্রেণী সফলভাবে মুছে ফেলা হয়েছে!", "success");
+                populateAdminClassSelects();
+            });
         }
 
         function toggleActionMenu(id) { document.getElementById('action-' + id).classList.toggle('hidden'); }
 
         let selectedLogUserForHistory = null;
+
         function renderUserLogList() {
-            const container = document.getElementById('user-log-list'); container.innerHTML = "";
+            const container = document.getElementById('user-log-list'); 
+            container.innerHTML = "";
             Object.keys(usersLog).forEach(user => {
                 const li = document.createElement('li');
                 li.className = "bg-white p-2.5 rounded-lg shadow-sm border-l-4 border-emerald-600 flex justify-between items-center font-semibold text-black hover:bg-slate-100 transition cursor-pointer";
+                
                 li.innerHTML = `
                     <div class="flex-grow py-1" onclick="selectAndShowUserHistory('${user}')">
                         <span>👤 ${user}</span>
@@ -1190,11 +1328,18 @@
                 container.appendChild(li);
             });
         }
-        function selectAndShowUserHistory(user) { selectedLogUserForHistory = user; showUserCallHistory(user); }
+
+        function selectAndShowUserHistory(user) {
+            selectedLogUserForHistory = user;
+            showUserCallHistory(user);
+        }
+        
         function showUserCallHistory(user) {
-            const container = document.getElementById('user-call-history'); container.innerHTML = "";
+            const container = document.getElementById('user-call-history'); 
+            container.innerHTML = "";
             const log = usersLog[user];
             const clearBtn = document.getElementById('clear-all-history-btn');
+
             if (log && log.calls && log.calls.length > 0) {
                 clearBtn.classList.remove('hidden');
                 log.calls.forEach((call, index) => {
@@ -1207,58 +1352,191 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="px-2 py-0.5 rounded text-white text-[9px] ${getStatusClass(call.status)}">${call.status}</span>
-                            <button onclick="deleteSingleHistoryItem('${user}', ${index})" class="text-red-500 hover:text-red-700 p-1 text-xs" title="রেকর্ড মুছুন"><i class="fas fa-trash-alt"></i></button>
+                            <button onclick="deleteSingleHistoryItem('${user}', ${index})" class="text-red-500 hover:text-red-700 p-1 text-xs" title="রেকর্ড মুছুন">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </div>
                     `;
                     container.appendChild(li);
                 });
-            } else { clearBtn.classList.add('hidden'); container.innerHTML = `<li class="text-gray-400 text-xs italic">কোন কল হিস্ট্রি পাওয়া যায়নি।</li>`; }
+            } else {
+                clearBtn.classList.add('hidden');
+                container.innerHTML = `<li class="text-gray-400 text-xs italic">কোন কল হিস্ট্রি পাওয়া যায়নি।</li>`;
+            }
         }
 
-        function deleteSingleHistoryItem(user, index) { showCustomConfirm("রেকর্ডটি মুছে ফেলতে চান?", function() { if (usersLog[user] && usersLog[user].calls) { usersLog[user].calls.splice(index, 1); rtdb.ref('usersLog/' + user + '/calls').set(usersLog[user].calls).then(() => showCustomAlert("মুছে ফেলা হয়েছে।", "success")); } }); }
-        function clearSelectedUserAllHistory() { if (!selectedLogUserForHistory) return; showCustomConfirm(`সমস্ত হিস্ট্রি মুছে ফেলতে চান?`, function() { rtdb.ref('usersLog/' + selectedLogUserForHistory + '/calls').remove().then(() => showCustomAlert("ডিলিট করা হয়েছে।", "success")); }); }
-        function deleteUserLogDirect(user) { showCustomConfirm(`ইউজার "${user}" মুছে ফেলতে চান?`, function() { rtdb.ref('usersLog/' + user).remove().then(() => { if (selectedLogUserForHistory === user) { selectedLogUserForHistory = null; document.getElementById('user-call-history').innerHTML = `<li class="text-gray-400 text-xs italic">কোন কল হিস্ট্রি পাওয়া যায়নি।</li>`; document.getElementById('clear-all-history-btn').classList.add('hidden'); } showCustomAlert(`ডিলিট করা হয়েছে।`, "success"); }); }); }
+        function deleteSingleHistoryItem(user, index) {
+            showCustomConfirm("আপনি কি এই হিস্ট্রি রেকর্ডটি মুছে ফেলতে চান?", function() {
+                if (usersLog[user] && usersLog[user].calls) {
+                    usersLog[user].calls.splice(index, 1);
+                    rtdb.ref('usersLog/' + user + '/calls').set(usersLog[user].calls)
+                        .then(() => {
+                            showCustomAlert("হিস্ট্রি রেকর্ডটি মুছে ফেলা হয়েছে।", "success");
+                        })
+                        .catch(err => {
+                            showCustomAlert("মুছে ফেলা যায়নি: " + err.message, "error");
+                        });
+                }
+            });
+        }
 
+        function clearSelectedUserAllHistory() {
+            if (!selectedLogUserForHistory) return;
+            showCustomConfirm(`আপনি কি নিশ্চিতভাবে ${selectedLogUserForHistory} এর সমস্ত কল হিস্ট্রি মুছে ফেলতে চান?`, function() {
+                rtdb.ref('usersLog/' + selectedLogUserForHistory + '/calls').remove()
+                    .then(() => {
+                        showCustomAlert("ইউজারের সমস্ত হিস্ট্রি ডিলিট করা হয়েছে।", "success");
+                    })
+                    .catch(err => {
+                        showCustomAlert("হিস্ট্রি ডিলিট করা যায়নি: " + err.message, "error");
+                    });
+            });
+        }
+
+        function deleteUserLogDirect(user) {
+            showCustomConfirm(`আপনি কি নিশ্চিতভাবে ইউজার "${user}" এবং তার সকল ট্র্যাকিং ডাটা ডাটাবেজ থেকে মুছে ফেলতে চান?`, function() {
+                rtdb.ref('usersLog/' + user).remove()
+                    .then(() => {
+                        if (selectedLogUserForHistory === user) {
+                            selectedLogUserForHistory = null;
+                            document.getElementById('user-call-history').innerHTML = `<li class="text-gray-400 text-xs italic">কোন কল হিস্ট্রি পাওয়া যায়নি।</li>`;
+                            document.getElementById('clear-all-history-btn').classList.add('hidden');
+                        }
+                        showCustomAlert(`ইউজার "${user}" সফলভাবে ডিলিট করা হয়েছে।`, "success");
+                    })
+                    .catch(err => {
+                        showCustomAlert("ইউজার ডিলিট করা যায়নি: " + err.message, "error");
+                    });
+            });
+        }
+
+        // --- সেটিংস ও কাস্টমাইজেশন লজিক ---
         function changeAdminPassword() {
             const currentPass = document.getElementById('current-pass-input').value.trim();
             const newPass = document.getElementById('new-pass-input').value.trim();
-            if (currentPass !== adminPassword) return showCustomAlert("ভুল বর্তমান পাসওয়ার্ড!", "error");
-            if (newPass === "") return showCustomAlert("নতুন পাসওয়ার্ড খালি হতে পারবে না!", "warning");
-            rtdb.ref('adminSettings').update({ password: newPass }).then(() => { adminPassword = newPass; showCustomAlert("পরিবর্তিত হয়েছে!", "success"); document.getElementById('current-pass-input').value = ""; document.getElementById('new-pass-input').value = ""; });
+            
+            if (currentPass !== adminPassword) {
+                return showCustomAlert("ভুল বর্তমান পাসওয়ার্ড!", "error");
+            }
+            if (newPass === "") {
+                return showCustomAlert("নতুন পাসওয়ার্ড খালি হতে পারবে মৃ না!", "warning");
+            }
+
+            rtdb.ref('adminSettings').update({ password: newPass })
+                .then(() => {
+                    adminPassword = newPass;
+                    showCustomAlert("পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!", "success");
+                    document.getElementById('current-pass-input').value = "";
+                    document.getElementById('new-pass-input').value = "";
+                })
+                .catch(() => showCustomAlert("ত্রুটি ঘটেছে! আবার চেষ্টা করুন।", "error"));
         }
-        function applyAndSaveTheme(themeName) { rtdb.ref('adminSettings').update({ theme: themeName }).then(() => showCustomAlert("থিম পরিবর্তিত হয়েছে!", "success")); }
+
+        function applyAndSaveTheme(themeName) {
+            rtdb.ref('adminSettings').update({ theme: themeName })
+                .then(() => showCustomAlert("থিম সফলভাবে পরিবর্তিত হয়েছে!", "success"))
+                .catch(() => showCustomAlert("থিম পরিবর্তন করা যায়নি!", "error"));
+        }
+
         const themeStyles = {
-            'islamic-green': { bodyBg: '#f0f4f1', cardBg: '#ffffff', textMain: '#1f2937', headerBg: '#064e3b', headerText: '#ffffff', headerSub: '#a7f3d0', badgeBg: '#047857', badgeText: '#fef08a', btnBg: '#059669', btnHoverBg: '#047857', borderTheme: '#10b981' },
-            'ocean-blue': { bodyBg: '#f0f4f8', cardBg: '#ffffff', textMain: '#1f2937', headerBg: '#1e3a8a', headerText: '#ffffff', headerSub: '#bfdbfe', badgeBg: '#1d4ed8', badgeText: '#fef08a', btnBg: '#2563eb', btnHoverBg: '#1d4ed8', borderTheme: '#3b82f6' },
-            'rose-maroon': { bodyBg: '#fff1f2', cardBg: '#ffffff', textMain: '#1f2937', headerBg: '#4c0519', headerText: '#ffffff', headerSub: '#fecdd3', badgeBg: '#be123c', badgeText: '#fef08a', btnBg: '#e11d48', btnHoverBg: '#be123c', borderTheme: '#f43f5e' },
-            'dark-chocolate': { bodyBg: '#fafaf9', cardBg: '#ffffff', textMain: '#1f2937', headerBg: '#451a03', headerText: '#ffffff', headerSub: '#fed7aa', badgeBg: '#78350f', badgeText: '#fef08a', btnBg: '#b45309', btnHoverBg: '#78350f', borderTheme: '#d97706' },
-            'charcoal-grey': { bodyBg: '#f4f4f5', cardBg: '#ffffff', textMain: '#1f2937', headerBg: '#1f2937', headerText: '#ffffff', headerSub: '#cbd5e1', badgeBg: '#374151', badgeText: '#ffffff', btnBg: '#4b5563', btnHoverBg: '#374151', borderTheme: '#6b7280' },
-            'night-dark': { bodyBg: '#18181b', cardBg: '#27272a', textMain: '#f4f4f5', headerBg: '#09090b', headerText: '#ffffff', headerSub: '#a1a1aa', badgeBg: '#3f3f46', badgeText: '#facc15', btnBg: '#52525b', btnHoverBg: '#3f3f46', borderTheme: '#71717a' }
+            'islamic-green': {
+                bodyBg: '#f0f4f1', cardBg: '#ffffff', textMain: '#1f2937',
+                headerBg: '#064e3b', headerText: '#ffffff', headerSub: '#a7f3d0',
+                badgeBg: '#047857', badgeText: '#fef08a', btnBg: '#059669',
+                btnHoverBg: '#047857', borderTheme: '#10b981'
+            },
+            'ocean-blue': {
+                bodyBg: '#f0f4f8', cardBg: '#ffffff', textMain: '#1f2937',
+                headerBg: '#1e3a8a', headerText: '#ffffff', headerSub: '#bfdbfe',
+                badgeBg: '#1d4ed8', badgeText: '#fef08a', btnBg: '#2563eb',
+                btnHoverBg: '#1d4ed8', borderTheme: '#3b82f6'
+            },
+            'rose-maroon': {
+                bodyBg: '#fff1f2', cardBg: '#ffffff', textMain: '#1f2937',
+                headerBg: '#4c0519', headerText: '#ffffff', headerSub: '#fecdd3',
+                badgeBg: '#be123c', badgeText: '#fef08a', btnBg: '#e11d48',
+                btnHoverBg: '#be123c', borderTheme: '#f43f5e'
+            },
+            'dark-chocolate': {
+                bodyBg: '#fafaf9', cardBg: '#ffffff', textMain: '#1f2937',
+                headerBg: '#451a03', headerText: '#ffffff', headerSub: '#fed7aa',
+                badgeBg: '#78350f', badgeText: '#fef08a', btnBg: '#b45309',
+                btnHoverBg: '#78350f', borderTheme: '#d97706'
+            },
+            'charcoal-grey': {
+                bodyBg: '#f4f4f5', cardBg: '#ffffff', textMain: '#1f2937',
+                headerBg: '#1f2937', headerText: '#ffffff', headerSub: '#cbd5e1',
+                badgeBg: '#374151', badgeText: '#ffffff', btnBg: '#4b5563',
+                btnHoverBg: '#374151', borderTheme: '#6b7280'
+            },
+            'night-dark': {
+                bodyBg: '#18181b', cardBg: '#27272a', textMain: '#f4f4f5',
+                headerBg: '#09090b', headerText: '#ffffff', headerSub: '#a1a1aa',
+                badgeBg: '#3f3f46', badgeText: '#facc15', btnBg: '#52525b',
+                btnHoverBg: '#3f3f46', borderTheme: '#71717a'
+            }
         };
+
         function applyThemeStyle(theme) {
-            const variables = themeStyles[theme]; if (!variables) return;
+            const variables = themeStyles[theme];
+            if (!variables) return;
+
             const root = document.documentElement;
-            Object.keys(variables).forEach(key => root.style.setProperty(`--${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`, variables[key]));
+            root.style.setProperty('--body-bg', variables.bodyBg);
+            root.style.setProperty('--card-bg', variables.cardBg);
+            root.style.setProperty('--text-main', variables.textMain);
+            root.style.setProperty('--header-bg', variables.headerBg);
+            root.style.setProperty('--header-text', variables.headerText);
+            root.style.setProperty('--header-sub', variables.headerSub);
+            root.style.setProperty('--badge-bg', variables.badgeBg);
+            root.style.setProperty('--badge-text', variables.badgeText);
+            root.style.setProperty('--btn-bg', variables.btnBg);
+            root.style.setProperty('--btn-hover-bg', variables.btnHoverBg);
+            root.style.setProperty('--border-theme', variables.borderTheme);
         }
-        function applyAndSaveFont(fontClass) { rtdb.ref('adminSettings').update({ font: fontClass }).then(() => showCustomAlert("ফন্ট পরিবর্তিত হয়েছে!", "success")); }
+
+        function applyAndSaveFont(fontClass) {
+            rtdb.ref('adminSettings').update({ font: fontClass })
+                .then(() => showCustomAlert("ফন্ট সফলভাবে পরিবর্তিত হয়েছে!", "success"))
+                .catch(() => showCustomAlert("ফন্ট পরিবর্তন করা যায়নি!", "error"));
+        }
+
         function applyFontStyle(fontClass) {
             const body = document.getElementById('dynamic-body');
-            body.classList.remove('font-hind-siliguri', 'font-noto-sans', 'font-noto-serif', 'font-atma', 'font-galada', 'font-anek-bangla', 'font-mina', 'font-solaimanlipi', 'font-kalpurush', 'font-shonarbangla', 'font-adorsholipi', 'font-alinur', 'font-charukola');
+            body.classList.remove(
+                'font-hind-siliguri', 'font-noto-sans', 'font-noto-serif', 
+                'font-atma', 'font-galada', 'font-anek-bangla', 'font-mina', 
+                'font-solaimanlipi', 'font-kalpurush', 'font-shonarbangla', 
+                'font-adorsholipi', 'font-alinur', 'font-charukola'
+            );
             body.classList.add(fontClass);
         }
 
         function renderCentralStudents() {
-            const body = document.getElementById('class-students-table-body'); body.innerHTML = "";
+            const body = document.getElementById('class-students-table-body');
+            body.innerHTML = "";
+
             let filtered = [];
-            if (currentModalMode === "class") filtered = students.filter(s => s.class === currentModalFilterValue);
-            else if (currentModalMode === "counter") filtered = students.filter(s => s.status === currentModalFilterValue);
-            else filtered = [...students];
+            if (currentModalMode === "class") {
+                filtered = students.filter(s => s.class === currentModalFilterValue);
+            } else if (currentModalMode === "counter") {
+                filtered = students.filter(s => s.status === currentModalFilterValue);
+            } else {
+                filtered = [...students];
+            }
 
             const searchVal = document.getElementById('class-search-input').value.trim().toLowerCase();
             if (searchVal) {
                 document.getElementById('class-search-clear-btn').classList.remove('hidden');
-                filtered = filtered.filter(s => s.id.toLowerCase().includes(searchVal) || s.name.toLowerCase().includes(searchVal) || (s.phone && s.phone.includes(searchVal)) || (s.fatherName && s.fatherName.toLowerCase().includes(searchVal)));
-            } else document.getElementById('class-search-clear-btn').classList.add('hidden');
+                filtered = filtered.filter(s => 
+                    s.id.toLowerCase().includes(searchVal) || 
+                    s.name.toLowerCase().includes(searchVal) || 
+                    (s.phone && s.phone.includes(searchVal)) ||
+                    (s.fatherName && s.fatherName.toLowerCase().includes(searchVal))
+                );
+            } else {
+                document.getElementById('class-search-clear-btn').classList.add('hidden');
+            }
 
             const paginationContainer = document.getElementById('pagination-container');
             if (currentModalMode === "all") {
@@ -1268,15 +1546,22 @@
                 document.getElementById('page-indicator').innerText = `পেজ ${currentPage} / ${totalPages}`;
                 document.getElementById('prev-page-btn').disabled = currentPage === 1;
                 document.getElementById('next-page-btn').disabled = currentPage === totalPages;
+
                 const startIdx = (currentPage - 1) * itemsPerPage;
                 filtered = filtered.slice(startIdx, startIdx + itemsPerPage);
-            } else paginationContainer.classList.add('hidden');
+            } else {
+                paginationContainer.classList.add('hidden');
+            }
 
-            if (filtered.length === 0) { body.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">কোন শিক্ষার্থী পাওয়া যায়নি।</td></tr>`; return; }
+            if (filtered.length === 0) {
+                body.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400">কোন শিক্ষার্থী পাওয়া যায়নি।</td></tr>`;
+                return;
+            }
 
             filtered.forEach((stud, index) => {
                 const tr = document.createElement('tr');
                 const actualIndex = currentModalMode === "all" ? ((currentPage - 1) * itemsPerPage) + index + 1 : index + 1;
+                
                 const currentStatus = stud.status || 'uncalled';
                 const statusCommentText = currentStatus === 'comment' && stud.comment ? `<div class="text-xs text-yellow-300 italic mt-1 bg-black bg-opacity-30 p-1 rounded">মন্তব্য: ${stud.comment}</div>` : '';
 
@@ -1307,9 +1592,10 @@
                     </td>
                     <td class="px-4 py-3 text-center">
                         <div class="relative inline-block text-left">
-                            <button onclick="toggleActionMenu('${stud.id}')" class="text-white hover:text-yellow-300 p-1.5 focus:outline-none"><i class="fas fa-ellipsis-v"></i></button>
-                            <div id="action-${stud.id}" class="hidden absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg border border-gray-200 z-50 py-1 text-black text-xs text-left">
-                                <button onclick="openFullEditModal('${stud.id}')" class="w-full px-3 py-2 hover:bg-emerald-50 text-emerald-700 flex items-center gap-1.5"><i class="fas fa-user-edit"></i> সম্পূর্ণ এডিট</button>
+                            <button onclick="toggleActionMenu('${stud.id}')" class="text-white hover:text-yellow-300 p-1.5 focus:outline-none">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div id="action-${stud.id}" class="hidden absolute right-0 mt-1 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-50 py-1 text-black text-xs text-left">
                                 <button onclick="editDuePrompt('${stud.id}')" class="w-full px-3 py-2 hover:bg-slate-100 flex items-center gap-1.5"><i class="fas fa-edit text-blue-600"></i> বকেয়া এডিট</button>
                                 <button onclick="deleteStudentDirect('${stud.id}')" class="w-full px-3 py-2 hover:bg-red-50 text-red-600 flex items-center gap-1.5"><i class="fas fa-trash-alt"></i> ডিলিট করুন</button>
                             </div>
@@ -1318,33 +1604,74 @@
                 `;
                 body.appendChild(tr);
             });
+
             setTimeout(() => handleTableScroll('table-scroll-container'), 100);
         }
 
-        function handleClassSearch() { renderCentralStudents(); }
-        function clearClassSearch() { document.getElementById('class-search-input').value = ""; renderCentralStudents(); }
-        function changePage(dir) { currentPage += dir; renderCentralStudents(); }
+        function handleClassSearch() {
+            renderCentralStudents();
+        }
+        function clearClassSearch() {
+            document.getElementById('class-search-input').value = "";
+            renderCentralStudents();
+        }
+        function changePage(dir) {
+            currentPage += dir;
+            renderCentralStudents();
+        }
 
+        // --- কাস্টম অ্যালার্ট এবং কনফার্মেশন মডাল ---
         function showCustomAlert(message, type = "success") {
             const alertModal = document.getElementById('custom-alert-modal');
             const alertIcon = document.getElementById('custom-alert-icon');
             const alertTitle = document.getElementById('custom-alert-title');
-            document.getElementById('custom-alert-message').innerText = message;
-            if (type === "success") { alertIcon.innerHTML = `<i class="fas fa-check-circle"></i>`; alertIcon.className = "text-4xl mb-3 text-green-600"; alertTitle.innerText = "সফল"; }
-            else if (type === "warning") { alertIcon.innerHTML = `<i class="fas fa-exclamation-circle"></i>`; alertIcon.className = "text-4xl mb-3 text-yellow-500"; alertTitle.innerText = "সতর্কতা"; }
-            else if (type === "error") { alertIcon.innerHTML = `<i class="fas fa-times-circle"></i>`; alertIcon.className = "text-4xl mb-3 text-red-600"; alertTitle.innerText = "ব্যর্থ"; }
+            const alertMsg = document.getElementById('custom-alert-message');
+
+            alertMsg.innerText = message;
+
+            if (type === "success") {
+                alertIcon.innerHTML = `<i class="fas fa-check-circle"></i>`;
+                alertIcon.className = "text-4xl mb-3 text-green-600";
+                alertTitle.innerText = "সফল";
+            } else if (type === "warning") {
+                alertIcon.innerHTML = `<i class="fas fa-exclamation-circle"></i>`;
+                alertIcon.className = "text-4xl mb-3 text-yellow-500";
+                alertTitle.innerText = "সতর্কতা";
+            } else if (type === "error") {
+                alertIcon.innerHTML = `<i class="fas fa-times-circle"></i>`;
+                alertIcon.className = "text-4xl mb-3 text-red-600";
+                alertTitle.innerText = "ব্যর্থ";
+            }
+
             alertModal.classList.remove('hidden');
         }
-        function closeCustomAlert() { document.getElementById('custom-alert-modal').classList.add('hidden'); }
+
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        }
 
         let confirmCallbackFn = null;
         function showCustomConfirm(message, callback) {
-            document.getElementById('custom-confirm-message').innerText = message;
+            const confirmModal = document.getElementById('custom-confirm-modal');
+            const confirmMsg = document.getElementById('custom-confirm-message');
+            
+            confirmMsg.innerText = message;
             confirmCallbackFn = callback;
-            document.getElementById('custom-confirm-modal').classList.remove('hidden');
-            document.getElementById('custom-confirm-yes-btn').onclick = function() { if (confirmCallbackFn) confirmCallbackFn(); closeCustomConfirm(); };
+            
+            confirmModal.classList.remove('hidden');
+            
+            const yesBtn = document.getElementById('custom-confirm-yes-btn');
+            
+            yesBtn.onclick = function() {
+                if (confirmCallbackFn) confirmCallbackFn();
+                closeCustomConfirm();
+            };
         }
-        function closeCustomConfirm() { document.getElementById('custom-confirm-modal').classList.add('hidden'); confirmCallbackFn = null; }
+
+        function closeCustomConfirm() {
+            document.getElementById('custom-confirm-modal').classList.add('hidden');
+            confirmCallbackFn = null;
+        }
     </script>
 </body>
 </html>
