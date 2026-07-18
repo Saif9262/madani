@@ -235,9 +235,10 @@
             <div class="p-4 overflow-y-auto h-[calc(100vh-140px)]" id="sidebar-classes-list"></div>
         </div>
         <div class="p-4 border-t border-gray-800 bg-slate-950 text-center">
-            <a href="https://github.com/Saif9262/madani" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-yellow-400 hover:text-white transition py-2.5 px-4 rounded-lg text-xs font-bold shadow-md">
+            <!-- গিটহাব লিংক রিমুভ করে টেক্সট করে দেওয়া হলো -->
+            <div class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 text-yellow-400 py-2.5 px-4 rounded-lg text-xs font-bold shadow-md cursor-default select-none">
                 <i class="fab fa-github text-sm"></i> গিটহাব সোর্স কোড (GitHub)
-            </a>
+            </div>
         </div>
     </div>
     <div id="sidebar-overlay" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black opacity-50 hidden z-40"></div>
@@ -269,14 +270,16 @@
                 <table class="min-w-full text-sm text-left table-fixed md:table-auto">
                     <thead class="text-xs uppercase theme-header" id="theme-thead-modal">
                         <tr>
-                            <th class="px-4 py-3 w-12">ক্র:</th>
-                            <th class="px-4 py-3 w-20">আইডি</th>
-                            <th class="px-4 py-3 w-44">শিক্ষার্থী ও পিতার নাম</th>
-                            <th class="px-4 py-3 w-40">ঠিকানা</th>
-                            <th class="px-4 py-3 w-24">বকেয়া</th>
-                            <th class="px-4 py-3 w-48">যোগাযোগ স্ট্যাটাস</th>
-                            <th class="px-4 py-3 text-center w-20">কল</th>
-                            <th class="px-4 py-3 text-center w-16">অ্যাকশন</th>
+                            <!-- প্রস্থ বাড়ানো হলো যাতে লেখা কেটে না যায় -->
+                            <th class="px-4 py-3 w-12 min-w-[50px]">ক্র:</th>
+                            <th class="px-4 py-3 w-20 min-w-[80px]">আইডি</th>
+                            <th class="px-4 py-3 min-w-[220px]">শিক্ষার্থী ও পিতার নাম</th>
+                            <th class="px-4 py-3 min-w-[160px]">ঠিকানা</th>
+                            <th class="px-4 py-3 w-24 min-w-[100px]">বকেয়া</th>
+                            <!-- যোগাযোগ স্ট্যাটাস ঘর লম্বা করা হলো -->
+                            <th class="px-4 py-3 min-w-[240px]">যোগাযোগ স্ট্যাটাস</th>
+                            <th class="px-4 py-3 text-center w-20 min-w-[80px]">কল</th>
+                            <th class="px-4 py-3 text-center w-16 min-w-[120px]">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="class-students-table-body" class="theme-text"></tbody>
@@ -291,7 +294,7 @@
         </div>
     </div>
 
-    <!-- ৭. উন্নত মাঝখানে কল পপ-আপ উইন্ডো (উндекс ডিটেইলস সহ) -->
+    <!-- ৭. উন্নত মাঝখানে কল পপ-আপ উইন্ডো -->
     <div id="call-popup-backdrop" class="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm hidden flex items-center justify-center z-[70] p-4">
         <div id="call-popup" class="bg-gray-900 text-white rounded-2xl shadow-2xl p-6 w-full max-w-md border-2 border-yellow-400 relative">
             <button onclick="closeCallPopup()" class="absolute top-4 right-4 text-2xl text-gray-300 hover:text-white">&times;</button>
@@ -303,7 +306,6 @@
                     <i class="fas fa-phone-volume animate-bounce"></i>
                 </div>
                 
-                <!-- শিক্ষার্থীর আকর্ষণীয় তথ্য কার্ড -->
                 <div class="bg-gray-800 bg-opacity-75 p-4 rounded-xl mb-4 text-left border border-gray-700 space-y-2.5">
                     <div>
                         <span class="text-[11px] text-yellow-300 block font-semibold">শিক্ষার্থীর নাম</span>
@@ -487,7 +489,7 @@
                 </div>
             </div>
 
-            <!-- Tab: ইউজার লগ (হিস্ট্রি রিয়েলটাইম রিমুভাল সহ) -->
+            <!-- Tab: ইউজার লগ -->
             <div id="tab-users" class="admin-tab-content hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="border p-4 rounded-lg bg-gray-50 shadow-sm">
@@ -534,7 +536,7 @@
                         <button onclick="changeAdminPassword()" class="w-full bg-emerald-600 text-white text-xs py-2 rounded font-semibold shadow hover:bg-emerald-700 transition mt-2">পাসওয়ার্ড আপডেট করুন</button>
                     </div>
 
-                    <!-- অপশন ২: থিম পরিবর্তন (৬টি প্রিমিয়াম থিম) -->
+                    <!-- অপশন ২: থিম পরিবর্তন -->
                     <div class="border p-4 rounded-xl bg-gray-50 shadow-sm space-y-3">
                         <h4 class="font-bold text-emerald-800 border-b pb-1.5 text-sm"><i class="fas fa-palette mr-1"></i> থিম কাস্টমাইজেশন (৬টি)</h4>
                         <div class="grid grid-cols-1 gap-1 h-64 overflow-y-auto pr-1">
@@ -559,7 +561,7 @@
                         </div>
                     </div>
 
-                    <!-- অপশন ৩: ফন্ট পরিবর্তন (১০টি সেরা বাংলা ফন্ট) -->
+                    <!-- অপশন ৩: ফন্ট পরিবর্তন -->
                     <div class="border p-4 rounded-xl bg-gray-50 shadow-sm space-y-3">
                         <h4 class="font-bold text-emerald-800 border-b pb-1.5 text-sm"><i class="fas fa-font mr-1"></i> বাংলা ফন্ট সেটিংস</h4>
                         <div class="grid grid-cols-1 gap-1.5 h-64 overflow-y-auto pr-1">
@@ -634,9 +636,9 @@
     <!-- ফুটার -->
     <footer class="w-full text-center py-6 border-t border-gray-200 dark:border-gray-800 opacity-90 text-xs mt-8">
         <p class="theme-text opacity-75">© ২০২৬ জামেয়া ইমদাদিয়া মাদানীনগর ড্যাশবোর্ড | সর্বস্বত্ব সংরক্ষিত</p>
-        <a href="https://github.com/Saif9262/madani" target="_blank" class="inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-900 font-bold transition mt-1.5 hover:underline">
+        <span class="inline-flex items-center gap-1.5 text-emerald-700 font-bold mt-1.5 select-none cursor-default">
             <i class="fab fa-github"></i> গিটহাব সোর্স কোড (Saif9262/madani)
-        </a>
+        </span>
     </footer>
 
     <script>
@@ -1257,7 +1259,7 @@
                 li.innerHTML = `
                     <div class="flex-grow py-1" onclick="selectAndShowUserHistory('${user}')">
                         <span>👤 ${user}</span>
-                        <div class="text-[10px] text-gray-400 font-normal">লগইন: ${usersLog[user].loginTime || '---'}</div>
+                        <div class="text-[10px] text-gray-400 font-normal">লॉगইন: ${usersLog[user].loginTime || '---'}</div>
                     </div>
                     <button onclick="deleteUserLogDirect('${user}')" class="text-red-500 hover:text-red-700 p-2 text-xs" title="ইউজার ডিলিট করুন">
                         <i class="fas fa-user-minus"></i>
@@ -1599,12 +1601,10 @@
             confirmModal.classList.remove('hidden');
             
             const yesBtn = document.getElementById('custom-confirm-yes-btn');
-            
-            // Fixed Logic: Save the callback function before closing the modal
+            // FIX: Run callback first, then close modal to ensure it doesn't get cleared before executing
             yesBtn.onclick = function() {
-                let callbackToRun = confirmCallbackFn; 
-                closeCustomConfirm(); 
-                if (callbackToRun) callbackToRun(); 
+                if (confirmCallbackFn) confirmCallbackFn();
+                closeCustomConfirm();
             };
         }
 
